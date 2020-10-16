@@ -65,5 +65,10 @@ class getGet extends Controller
         $detail = DB::table('detail_klaim')->where('id_komponen',$id)->pluck('detail','id');
         return json_encode($detail);
     }
+
+    public function getbahan($id){
+        $bb = DB::table('bahans')->where('id',$id)->pluck('principle','id');
+        return json_encode($bb);
+    }
     
 }

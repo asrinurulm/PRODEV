@@ -1,9 +1,5 @@
 @extends('admin.tempadmin')
-
 @section('title', 'Edit Bahan Baku')
-
-@section('judulnya','Edit Bahan Baku')
-
 @section('content')
 
 <div class="row">

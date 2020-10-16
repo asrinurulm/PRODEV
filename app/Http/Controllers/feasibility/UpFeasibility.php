@@ -25,11 +25,12 @@ class UpFeasibility extends Controller
 
     public function index($id){
         $hitung_feasibility_terakhir = finance::where('id_formula',$id)->count();
-        $feasibility_terakhir = finance::where('kemungkinan',$hitung_feasibility_terakhir)->first();
-        
+        $feasibility_terakhir = finance::where('kemungkinan',$hitung_feasibility_terakhir)->where('id_formula',$id)->first();
+        //dd($feasibility_terakhir);
         //upFeasibility
         $feasibility_baru = new finance;
         $feasibility_baru->id_formula = $id;
+        $feasibility_baru->id_wb = $feasibility_terakhir->id_wb;
         $feasibility_baru->kemungkinan = $hitung_feasibility_terakhir+1;
         // $feasibility_baru->status_mesin = $feasibility_terakhir->status_mesin;
         // $feasibility_baru->status_sdm = $feasibility_terakhir->status_sdm;

@@ -1,7 +1,5 @@
 @extends('mesin.tempmesin')
-
 @section('title','Feasibility|inputor')
-
 @section('content')
 <div clas="row">
 

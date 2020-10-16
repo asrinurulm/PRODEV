@@ -1,6 +1,5 @@
 @extends('admin.tempadmin')
-@section('title', 'detailuser')
-@section('judulhalaman','User Management')
+@section('title', 'ADMIN | Detail User')
 @section('content')
 
 @if (session('status'))

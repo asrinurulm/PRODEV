@@ -1,6 +1,5 @@
 @extends('admin.tempadmin')
 @section('title', 'Data Kelompok')
-@section('judulhalaman','Data Master')
 @section('content')
 
 <div class="row">

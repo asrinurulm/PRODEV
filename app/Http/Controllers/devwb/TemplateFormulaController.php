@@ -20,7 +20,7 @@ class TemplateFormulaController extends Controller
     }
 
     public function index($ftujuan,$id){
-        $formulas = Formula::all();
+        $formulas = Formula::where('vv','=','approve')->get();
         return view('devwb.template')->with([
             'formulas' => $formulas,
             'ftujuan' => $ftujuan,

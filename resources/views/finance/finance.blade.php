@@ -12,7 +12,6 @@
           <li role="presentation" class=""><a href="#tab_content7" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Data Lab</a></li>
           <li role="presentation" class=""><a href="#tab_content8" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Kemasan</a></li>
           <li role="presentation" class=""><a href="#tab_content9" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Harga Bahan Baku</a></li>
-          <li role="presentation" class=""><a href="#tab_content10" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Approve Data</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
 
@@ -57,7 +56,7 @@
                             <?php ++$no ;?>
                               <tr>
                                 <div class="col-md-1 col-sm-1 col-xs-12">
-                                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$fe->id_feasibility}}" class="form-control col-md-7 col-xs-12">
+                                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$dM->id_feasibility}}" class="form-control col-md-7 col-xs-12">
                                 </div>
                                 @if( $dM->meesin->kategori=='granulasi' )
                                 <td  class="text-center">{{$no}}</td>
@@ -163,7 +162,7 @@
                               <?php ++$no ;?>
                               <tr>
                                 <div class="col-md-1 col-sm-1 col-xs-12">
-                                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$fe->id_feasibility}}" class="form-control col-md-7 col-xs-12">
+                                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$dM->id_feasibility}}" class="form-control col-md-7 col-xs-12">
                                 </div>
                                 @if( $dM->meesin->kategori=='mixing' )
                                 <td  class="text-center">{{$no}}</td>
@@ -269,7 +268,7 @@
                             <?php ++$no ;?>
                               <tr>
                                 <div class="col-md-1 col-sm-1 col-xs-12">
-                                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$fe->id_feasibility}}" class="form-control col-md-7 col-xs-12">
+                                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$dM->id_feasibility}}" class="form-control col-md-7 col-xs-12">
                                 </div>
                                 @if( $dM->meesin->kategori=='filling' )
                                 <td  class="text-center">{{$no}}</td>
@@ -377,7 +376,7 @@
                             <?php ++$no ;?>
                               <tr>
                                 <div class="col-md-1 col-sm-1 col-xs-12">
-                                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$fe->id_feasibility}}" class="form-control col-md-7 col-xs-12">
+                                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$dM->id_feasibility}}" class="form-control col-md-7 col-xs-12">
                                 </div>
                                 @if( $dM->meesin->kategori=='packing' )
                                 <td  class="text-center">{{$no}}</td>
@@ -519,7 +518,7 @@
               @foreach($dataL as $dL)
               <tr>
                 <div class="col-md-1 col-sm-1 col-xs-12">
-                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$fe->id_feasibility}}" class="form-control col-md-7 col-xs-12">
+                  <input type="hidden" name="finance" maxlength="45" required="required" value="{{$dL->id_feasibility}}" class="form-control col-md-7 col-xs-12">
                 </div>
                 <td><input class="form-control1" type="text" id="txtName" value="{{ $dL->jenis_mikroba }}" readonly /></td>
                 <td><input type="text" id="txtGender" checked class="form-control1 text-center" value="{{ $dL->tahunan }}" readonly /></td>
@@ -607,8 +606,10 @@
                     </tbody>
                   </table>
                 
-                  @foreach($dataF as $dF)
+                  @foreach($fe as $dF)
+                  @if($dF->status_kemas!='belum_selesai')
                     <a href="{{ route('kemas',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}" class="btn btn-info fa fa-eye" type="submit">  Lihat Data</a>
+                  @endif
                   @endforeach
                 </div>
               </div>
@@ -728,63 +729,6 @@
           </div>
           <!-- BB selesai -->
 
-          <!-- approve data -->
-          <div role="tabpanel" class="tab-pane fade" id="tab_content10" aria-labelledby="profile-tab">
-            <table class="table table-responsive table-bordered " ALIGN="center">
-              <thead>
-                <tr style="font-weight: bold;color:white;background-color: #2a3f54;">
-                  <td width="5%" class="text-center">No</td>
-                  <td>User</td>
-                  <td>Pengirim</td>
-                  <td>Data</td>
-                  <td>Tanggal Masuk</td>
-                  <td width="40%" class="text-center">Action</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Evaluator</td>
-                  <td>{{ $u->user1 }}</td>
-                  <td>Data Mesin</td>
-                  <td>{{ $u->updated_at }}</td>
-                  <td class="text-center">
-                  @foreach($dataF as $dF)
-                  @if($dF->status_mesin!="selesai")
-                    @if($dF->status_mesin!="belum selesai")
-                    <a href="{{ route('komentar',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}" class="btn btn-danger fa fa-times" type="button" data-toggle="tooltip" title="Tolak"></a>
-                    @endif
-                  <a href="{{route('mesinselesai',$dF->id_feasibility)}}" class="btn btn-primary fa fa-check" data-toggle="tooltip" title="Terima"></a>
-                  @else
-                  selesai
-                  @endif
-                  @endforeach
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Kemas</td>
-                  <td>{{ $ko->user }}</td>
-                  <td>Data Kemas</td>
-                  <td>{{ $ko->updated_at }}</td>
-                  <td class="text-center">
-                  @foreach($dataF as $dF)
-                  @if($dF->status_kemas!="selesai")
-                  @if($dF->status_kemas!="belum selesai")
-                  <a href="{{ route('Kkemas',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}" class="btn btn-danger fa fa-times" type="button" data-toggle="tooltip" title="Tolak"></a>
-                  @endif
-                  <a href="{{route('kemasselesai',$dF->id_feasibility)}}" class="btn btn-primary fa fa-check" data-toggle="tooltip" title="Terima"></a>
-                  @else
-                  selesai
-                  @endif
-                  @endforeach
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- approve data selesai -->
-
           @foreach($dataF as $dF)
           <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="{{route('status',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula])}}" method="post">
             <input class="form-control1 hidden" name="statusF" class="text-center col-md-7 col-xs-12" value="selesai">
@@ -792,6 +736,7 @@
             <input class="form-control1 hidden" name="statusS" class="text-center col-md-7 col-xs-12" value="selesai">
             <input class="form-control1 hidden" name="statusK" class="text-center col-md-7 col-xs-12" value="selesai"> --}}
             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
+            <a href="{{ route('myFeasibility',[$dF->id_formula]) }}" type="button" class="btn btn-danger btn-sm"><li class="fa fa-arrow-circle-left"></li> Back</a>
               
             <button type="submit" class="btn btn-info btn-sm"> Finish</button>
             {{csrf_field()}}

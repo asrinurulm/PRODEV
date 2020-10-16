@@ -1,6 +1,5 @@
 @extends('pv.tempvv')
 @section('title', 'SKU')
-@section('judulhalaman','SKU')
 @section('content')
 
 <div class="row">
@@ -69,7 +68,6 @@
 					<td width="10px">No</td>
 					<td>No Formula</td>
           <td>Nama Produk</td>
-          <td>no</td>
           <td>Nama SKU</td>
 					<td>Kode Item</td>
 					@if(auth()->user()->role->namaRule == 'admin')
@@ -86,7 +84,6 @@
 					<td>{{++$no}}</td>
 					<td>{{$sku->no_formula}}</td>
           <td>{{$sku->nama_produk}}</td>
-          <td>{{$sku->no}}</td>
           <td>{{$sku->nama_sku}}</td>
 					<td>{{$sku->kode_items}}</td>
 					@if(auth()->user()->role->namaRule == 'admin')

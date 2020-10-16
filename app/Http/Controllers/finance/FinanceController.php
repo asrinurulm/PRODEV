@@ -10,7 +10,6 @@ use Input;
 use Validator;
 
 use App\Modelmesin\Dmesin;
-use App\Modelmesin\oh;
 use App\Modelfn\finance;
 use App\Modelfn\pesan;
 use App\dev\Formula;
@@ -32,48 +31,45 @@ class FinanceController extends Controller
         $this->middleware('rule:finance' || 'rule:pv_lokal' || 'rule:pv_global');
     }
 
-    public function indexx($id,$id_feasibility){
-        $Mdata = Dmesin::with('meesin')->get()->where('id_feasibility', $id_feasibility);
-        $dataO = oh::with('dataoh')->get()->where('id_feasibility', $id_feasibility);
-        $fe=finance::find($id_feasibility);
-        $formula = Formula::where('id',$id)->first();
-        $Jlab = Dlab::where('id_feasibility',$id_feasibility)->sum('rate');
-        $Jmesin = Dmesin::where('id_feasibility',$id_feasibility)->sum('hasil');
-        $Joh = oh::where('id_feasibility',$id_feasibility)->sum('hasil');
-        $total = $Jmesin+$Joh;
-        $dataL =Dlab::where('id_feasibility',$id_feasibility)->get();
-        $kemas =userkemas::where('id_feasibility', $id_feasibility)->get();
-        $dataF = finance::where('id_feasibility', $id_feasibility)->get();
-        return view('finance.finance')->with([
-            'id_feasibility' => $id_feasibility,
-            'fe' => $fe,
-            'kemas' => $kemas,
-            'Mdata' => $Mdata,
-            'id' => $id,
-            'formula' => $formula,
-            'total' => $total,
-            'jlab' =>$Jlab,
-            'dataL' => $dataL,
-            'dataO' => $dataO,
-            'dataF' => $dataF
-        ]);
-    }
+    // public function indexx($id,$id_feasibility){
+    //     $Mdata = Dmesin::with('meesin')->get()->where('id_feasibility', $id_feasibility);
+    //     $dataO = oh::with('dataoh')->get()->where('id_feasibility', $id_feasibility);
+    //     $fe=finance::find($id_feasibility);
+    //     $formula = Formula::where('id',$id)->first();
+    //     $Jlab = Dlab::where('id_feasibility',$id_feasibility)->sum('rate');
+    //     $Jmesin = Dmesin::where('id_feasibility',$id_feasibility)->sum('hasil');
+    //     $Joh = oh::where('id_feasibility',$id_feasibility)->sum('hasil');
+    //     $total = $Jmesin+$Joh;
+    //     $dataL =Dlab::where('id_feasibility',$id_feasibility)->get();
+    //     $kemas =userkemas::where('id_feasibility', $id_feasibility)->get();
+    //     $dataF = finance::where('id_feasibility', $id_feasibility)->get();
+    //     return view('finance.finance')->with([
+    //         'id_feasibility' => $id_feasibility,
+    //         'fe' => $fe,
+    //         'kemas' => $kemas,
+    //         'Mdata' => $Mdata,
+    //         'id' => $id,
+    //         'formula' => $formula,
+    //         'total' => $total,
+    //         'jlab' =>$Jlab,
+    //         'dataL' => $dataL,
+    //         'dataO' => $dataO,
+    //         'dataF' => $dataF
+    //     ]);
+    // }
 
     public function summary($id,$id_feasibility){
         $ko= konsep::where('id_feasibility',$id_feasibility)->first();
         $u= Dmesin::where('id_feasibility',$id_feasibility)->first();
         $Mdata = Dmesin::with('meesin')->get()->where('id_feasibility', $id_feasibility);
-        $dataO = oh::with('dataoh')->get()->where('id_feasibility', $id_feasibility);
         $fe=finance::find($id_feasibility);
         $Jlab = Dlab::where('id_feasibility',$id_feasibility)->sum('rate');
         $Jmesin = Dmesin::where('id_feasibility',$id_feasibility)->sum('hasil');
-        $Joh = oh::where('id_feasibility',$id_feasibility)->sum('hasil');
         $konsep = konsep::where('id_feasibility',$id_feasibility)->get();
-        $total = $Jmesin+$Joh;
         $dataL =Dlab::where('id_feasibility',$id_feasibility)->get();
         $kemas =userkemas::where('id_feasibility', $id_feasibility)->get();
         $dataF = finance::where('id_feasibility', $id_feasibility)->get();
-        $formula = Formula::where('workbook_id',$id)->first();
+        $formula = Formula::where('id',$id)->first();
         $fortails = Fortail::where('formula_id',$id)->get();
         $ada = Fortail::where('formula_id',$id)->count();
 
@@ -199,7 +195,6 @@ class FinanceController extends Controller
             'u' => $u,
             'ko' => $ko,
             'dataL' => $dataL,
-            'dataO' => $dataO,
             'dataF' => $dataF
         ]);
     }
@@ -337,21 +332,6 @@ class FinanceController extends Controller
         ]);
     }
 
-    public function DMoh($id,$id_feasibility){
-        $aktifitas = aktifitasOH::all();
-        $dataF = finance::where('id_feasibility', $id_feasibility)->get();
-        $fe=finance::find($id_feasibility);
-        $dataO = oh::with('dataoh')->get()->where('id_feasibility', $id_feasibility);
-        return view('finance.DMoh')->with([
-            'dataF' => $dataF,
-            'fe'=> $fe,
-            'id' => $id,
-            'id_feasibility' => $id_feasibility,
-            'aktifitas' => $aktifitas,
-            'dataO' => $dataO
-        ]);
-    }
-
     public function createDMmesin(Request $request){
         $ms= new Dmesin;
         foreach ($request->input("pmesin") as $pmesin){
@@ -360,18 +340,6 @@ class FinanceController extends Controller
             $add_mesin->rate_mesin=$request->rate;
             $add_mesin->id_data_mesin= $pmesin;
             $add_mesin->save();
-        }
-        return redirect()->back();
-    }
-
-    public function createDMoh(Request $request){
-        $aktifitas= new oh;
-        foreach ($request->input("oh") as $oh){
-            $add_oh = new oh;
-            $add_oh->id_feasibility=$request->finance;
-            $add_oh->rate_aktifitas=$request->rateoh;
-            $add_oh->id_aktifitasOH= $oh;
-            $add_oh->save();
         }
         return redirect()->back();
     }
@@ -413,12 +381,6 @@ class FinanceController extends Controller
         return redirect::back()->with('message', 'Data berhasil dihapus!');
     }
 
-    public function destroyoh($id){
-        $mesin = oh::find($id);
-        $mesin->delete();
-        return redirect::back();
-    }
-
     public function status(Request $request,$id, $id_feasibility){
         $statuss=finance::where('id_feasibility',$id_feasibility)->first();
         $statuss->status_finance=$request->statusF;
@@ -431,7 +393,7 @@ class FinanceController extends Controller
         $statuss->status_feasibility='selesai';
         $statuss->save();
 
-        $formula = formula::where('workbook_id',$id)->first();
+        $formula = formula::where('id',$id)->first();
         $formula->status_fisibility='selesai';
         $formula->save();
 
@@ -439,15 +401,13 @@ class FinanceController extends Controller
     }
 
     public function akhir($id_feasibility){
-        $Mdata = Dmesin::with('meesin')->get()->where('id_feasibility', $id_feasibility);
-        $dataO = oh::with('dataoh')->get()->where('id_feasibility', $id_feasibility);
+        $Mdata = Dmesin::with('meesin')->where('id_feasibility', $id_feasibility)->get();
         $fe=finance::find($id_feasibility);
-        $dataF = finance::with('formula')->get()->where('id_feasibility', $id_feasibility)->first();
+        $dataF = finance::with('formula')->where('id_feasibility', $id_feasibility)->first();
         return view('finance.akhir')->with([
             'id_feasibility' => $id_feasibility,
             'fe' => $fe,
             'Mdata' => $Mdata,
-            'dataO' => $dataO,
             'dataF' => $dataF
         ]);
     }
@@ -466,18 +426,15 @@ class FinanceController extends Controller
     public function index($id,$id_feasibility){
         $ko= konsep::where('id_feasibility',$id_feasibility)->first();
         $u= Dmesin::where('id_feasibility',$id_feasibility)->first();
-        $Mdata = Dmesin::with('meesin')->get()->where('id_feasibility', $id_feasibility);
-        $dataO = oh::with('dataoh')->get()->where('id_feasibility', $id_feasibility);
-        $fe=finance::find($id_feasibility);
+        $Mdata = Dmesin::with('meesin')->where('id_feasibility', $id_feasibility)->get();
+        $fe= finance::where('id_feasibility', $id_feasibility)->get();
         $Jlab = Dlab::where('id_feasibility',$id_feasibility)->sum('rate');
         $Jmesin = Dmesin::where('id_feasibility',$id_feasibility)->sum('hasil');
-        $Joh = oh::where('id_feasibility',$id_feasibility)->sum('hasil');
         $konsep = konsep::where('id_feasibility',$id_feasibility)->get();
-        $total = $Jmesin+$Joh;
         $dataL =Dlab::where('id_feasibility',$id_feasibility)->get();
         $kemas =userkemas::where('id_feasibility', $id_feasibility)->get();
         $dataF = finance::where('id_feasibility', $id_feasibility)->get();
-        $formula = Formula::where('workbook_id',$id)->first();
+        $formula = Formula::where('id',$id)->first();
         $fortails = Fortail::where('formula_id',$id)->get();
         $ada = Fortail::where('formula_id',$id)->count();
 
@@ -486,7 +443,8 @@ class FinanceController extends Controller
         // }elseif($formula->batch > 1){
         //     return Redirect::back()->with('error','Data Bahan Formula Versi '.$formula->versi.'.'.$formula->turunan.' Belum Memliki Batch');
         // }
-
+        
+        // Formula
         $detail_formula     = collect();
         $granulasi          = 0;
         $jumlah_granulasi   = 0;
@@ -598,12 +556,10 @@ class FinanceController extends Controller
             'id' => $id,
             'formula' => $formula,
             'konsep' => $konsep,
-            'total' => $total,
             'jlab' =>$Jlab,
             'u' => $u,
             'ko' => $ko,
             'dataL' => $dataL,
-            'dataO' => $dataO,
             'dataF' => $dataF
         ]);
     }

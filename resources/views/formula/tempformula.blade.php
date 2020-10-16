@@ -74,6 +74,9 @@
                     <li><a href="{{ route('akg') }}">Data AKG</a></li>
                     <li><a href="{{ route('export') }}">Data Kemas</a></li>
                     <li><a href="{{ route('klaim') }}">Komponen Klaim</a></li>
+                    @if(auth()->user()->role->namaRule == 'user_produk')
+                      <li><a href="{{ route('bahanbaku') }}">Bahan Baku</a></li>
+                      @endif
                   </ul>
                 </li>
                 </ul>

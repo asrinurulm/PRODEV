@@ -137,11 +137,8 @@
                   @endif
             </td>
             <td class="text-center">
-              @if($pkp->status_project=='proses')
               <a class="btn btn-info btn-sm" href="{{ Route('rekappkp',$pkp->id_project) }}" data-toggle="tooltip" title="Show"><i class="fa fa-folder-open"></i></a>
-              {{csrf_field()}}
-              @elseif($pkp->status_project=='close')
-              <a class="btn btn-info btn-sm" href="{{ Route('rekappkp',$pkp->id_project) }}" data-toggle="tooltip" title="Show"><i class="fa fa-folder-open"></i></a>
+              @if($pkp->status_project=='close')
               <button class="btn btn-info btn-sm" disabled><li class="fa fa-smile-o" title="close"></li></button>
               @endif
             </td>
@@ -183,11 +180,8 @@
                   @endif
             </td>
             <td class="text-center">
-              @if($pkp->status_project=='proses')
               <a class="btn btn-info btn-sm" href="{{ Route('rekappkp',$pkp->id_project) }}" data-toggle="tooltip" title="Show"><i class="fa fa-folder-open"></i></a>
-              {{csrf_field()}}
-              @elseif($pkp->status_project=='close')
-              <a class="btn btn-info btn-sm" href="{{ Route('rekappkp',$pkp->id_project) }}" data-toggle="tooltip" title="Show"><i class="fa fa-folder-open"></i></a>
+              @if($pkp->status_project=='close')
               <button class="btn btn-success btn-sm" title="this project is finished" disabled><li class="fa fa-smile-o" title="close"></li></button>
               @endif
             </td>

@@ -13,12 +13,10 @@
           <div class="" role="tabpanel" data-example-id="togglable-tabs">
             <ul class="nav nav-tabs  tabs" role="tablist">
               @foreach($dataF as $dF)
-                <li role="presentation" class="active"><a href="{{ route('runtimemesin',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}">GRANULASI</a></li>
+                <li role="presentation" class="active"><a href="{{ route('runtimemesin',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}">MAKLON</a></li>
                 <li role="presentation" class=""><a href="{{ route('mesinmixing',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}">MIXING</a></li>
                 <li role="presentation" class=""><a href="{{ route('mesinfilling',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}">FILLING</a></li>
                 <li role="presentation" class=""><a href="{{ route('mesinpacking',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}">PACKING</a></li>
-                <li role="presentation" class=""><a href="{{ route('activitymesin',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}">ACTIVITY</a></li>
-                <li role="presentation" class=""><a href="{{ route('labmesin',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}">LAB</a></li>
                 
               @endforeach
             </ul><br>
@@ -42,7 +40,7 @@
 
                   {!!csrf_field()!!}
                   <tr id="row{{$dM->id_mesin}}">
-                    @if( $dM->meesin->kategori=='granulasi' )
+                    @if( $dM->meesin->kategori=='Kirim Maklon' || $dM->meesin->kategori=='Maklon lain')
                     <td> {{ $dM->meesin->nama_mesin }}</td>
                     <td class="text-center" width="15%">{{$dM->standar_sdm}} Orang</td>
 
@@ -98,8 +96,8 @@
               <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="{{route('statusM',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula])}}" method="post">
               <input class="form-control1 " type="hidden" name="statusM" class="text-center col-md-7 col-xs-12" value="sending">
               <center>
-                <a href="{{ route('datamesin',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}" class="btn btn-danger" type="button">Kembali</a>
-                <button type="submit" class="btn btn-primary">Selesai</button>
+                <a href="{{ route('datamesin',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}" class="btn btn-danger btn-sm" type="button">Back</a>
+                <!-- <button type="submit" class="btn btn-primary">Selesai</button> -->
 			          {{ csrf_field() }}
               </center><br>
               </form>

@@ -52,8 +52,9 @@
                           @endforeach
                         </select>
                       </div>
+                        <input type="text" value="{{$promo->project_name}}" name="name" id="id">
                         <?php $date = Date('j-F-Y'); ?>
-                        <input required id="date" value="{{$date}}" required="required" class="form-control col-md-12 col-xs-12" type="text" name="date" readonly>
+                        <input required id="hidden" value="{{$date}}" required="required" class="form-control col-md-12 col-xs-12" name="date" readonly>
                       <div class="col-md-4 col-sm-9 col-xs-12">
                         <select name="rka" class="form-control form-control-line" id="rka">
                           <option Value="1">RKA</option>
@@ -183,6 +184,7 @@
                           @endforeach
                         </select>
                       </div>
+                            <input type="hidden" value="{{$promo->project_name}}" name="name" id="id">
                       <label class="control-label text-bold col-md-1 col-sm-3 col-xs-12 text-center">Dept 2</label>
                       <div class="col-md-4 col-sm-9 col-xs-12">
                         <select name="rka" class="form-control form-control-line" id="rka">

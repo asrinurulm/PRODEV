@@ -16,9 +16,14 @@ class Fortail extends Model
         return $this->hasMany('App\dev\Premix');
     }
 
-    public function Bahan(){
-        return $this->belongsTo('App\dev\Bahan');
-    }
+    public function Bahan(){return $this->belongsTo('App\dev\Bahan','nama_sederhana','id');}
+    public function alternatif1(){return $this->belongsTo('App\dev\Bahan','alternatif','id');}
+    public function alternatifke2(){return $this->belongsTo('App\dev\Bahan','alternatif2','id');}
+    public function alternatifke3(){return $this->belongsTo('App\dev\Bahan','alternatif3','id');}
+    public function alternatifke4(){return $this->belongsTo('App\dev\Bahan','alternatif4','id');}
+    public function alternatifke5(){return $this->belongsTo('App\dev\Bahan','alternatif5','id');}
+    public function alternatifke6(){return $this->belongsTo('App\dev\Bahan','alternatif6','id');}
+    public function alternatifke7(){return $this->belongsTo('App\dev\Bahan','alternatif7','id');}
 
     // Alternatif relationship
 

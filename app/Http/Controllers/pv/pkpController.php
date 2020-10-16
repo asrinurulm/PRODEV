@@ -28,7 +28,6 @@ use App\dev\formula;
 use App\User;
 use App\master\Tarkon;
 use App\Modelfn\finance;
-use App\pkp\data_uom;
 use App\pkp\promo;
 use App\kemas\datakemas;
 use App\pkp\coba;
@@ -150,7 +149,6 @@ class pkpController extends Controller
         $for = data_forecast::where('id_pkp',$id_project)->where('revisi',$revisi)->where('turunan',$turunan)->get();
         $pkpp = tipp::join('pkp_project','tippu.id_pkp','=','pkp_project.id_project')->where([ ['id_pkp',$id_project], ['revisi',$revisi], ['turunan',$turunan] ])->get();
         $ses= data_ses::where([ ['id_pkp',$id_project], ['revisi','<=',$revisi], ['turunan','<=',$turunan] ])->orderBy('revisi','desc')->orderBy('turunan','desc')->get();
-        $uom= data_uom::where([ ['id_pkp',$id_project], ['revisi',$revisi], ['turunan',$turunan] ])->get();
         $max = tipp::where('id_pkp',$id_project)->max('turunan');
         $pkp2 = tipp::where('id_pkp',$id_project)->where('revisi','<=',$revisi)->where('turunan',$max)->orderBy('turunan','desc')->orderBy('revisi','desc')->get();
         $pkp1 = tipp::where('id_pkp',$id_project)->where('revisi','<=',$revisi)->where('turunan','<=',$turunan)->orderBy('turunan','desc')->orderBy('revisi','desc')->get();
@@ -172,7 +170,6 @@ class pkpController extends Controller
             'hitungnotif' => $hitungnotif,
             'pkp' => $pkp,
             'datases' => $ses,
-            'datauom' => $uom,
             'for' => $for,
             'datadetail' => $datadetail,
             'dataklaim' => $dataklaim,
@@ -202,7 +199,6 @@ class pkpController extends Controller
         $hitungnotif = $pengajuan + $notif;
         $dataklaim = data_klaim::where('id_pkp',$id_project)->join('klaim','klaim.id','=','id_klaim')->where('revisi',$revisi)->where('turunan',$turunan)->get();
         $ses= data_ses::where([ ['id_pkp',$id_project], ['revisi',$revisi], ['turunan',$turunan] ])->get();
-        $uom= data_uom::where([  ['id_pkp',$id_project], ['revisi',$revisi], ['turunan',$turunan] ])->get();
         $datadetail = data_detail_klaim::where('id_pkp',$id_project)->where('turunan',$turunan)->get();
         return view('pkp.downloadpkp')->with([
             'pkpp' => $pkpp,
@@ -214,7 +210,6 @@ class pkpController extends Controller
             'dataklaim' => $dataklaim,
             'datases' => $ses,
             'for' => $for,
-            'datauom' => $uom,
             'pkp' => $pkp,
             'picture' => $picture
         ]); 
@@ -756,7 +751,7 @@ class pkpController extends Controller
         $tip->remarks_ses=$request->remarks_ses;
         $tip->remarks_forecash=$request->remarks_forecash;
         $tip->remarks_product_form=$request->remarks_product_form;
-        $tip->perevisi=Auth::user()->id;
+        $tip->perevisi=$tip->perevisi;
         $tip->last_update=$request->last_up;
         $tip->Estimated=$request->estimated;
         $tip->launch=$request->launch;
@@ -1269,7 +1264,7 @@ class pkpController extends Controller
                 'jangka' => $request->jangka,
                 'waktu' => $request->waktu,],function($message)use($request)
                 {
-                    $message->subject('PROJECT PKP');
+                    $message->subject('PKP '.$request->name);
                     $message->from('app.prodev@nutrifood.co.id', 'Admin PRODEV');
                     //sent email to manager
                     $dept = DB::table('departements')->where('id',$request->kirim)->get();
@@ -1335,8 +1330,8 @@ class pkpController extends Controller
         $isi->status_pkp='sent';
         $isi->save();
 
-        $data = pengajuan::where([ ['id_pkp',$id_project], ['revisi',$revisi], ['turunan',$turunan] ])->count();
-        if($data == 1){
+        $pengajuan = pengajuan::where('id_pkp',$id_project)->count();
+        if($pengajuan == 1){
             $pengajuan = pengajuan::where('id_pkp',$id_project)->first();
             $pengajuan->delete();
         }
@@ -1350,7 +1345,7 @@ class pkpController extends Controller
                 'jangka' => $request->jangka,
                 'waktu' => $request->waktu,],function($message)use($request)
                 {
-                    $message->subject('PROJECT PKP');
+                    $message->subject('PKP '.$request->name);
                     $message->from('app.prodev@nutrifood.co.id', 'Admin PRODEV');
                     //sent email to manager
                     $dept = DB::table('departements')->where('id',$request->kirim)->get();
@@ -1404,14 +1399,6 @@ class pkpController extends Controller
         $edit->userpenerima2=$request->user2;
         $edit->status_project='proses';
         $edit->save();
-
-        $pkp = tipp::where('id_pkp',$id_project)->where('status_data','=','active')->first();
-        if($request->user2!=null){
-            //dd($pkp->id);
-            $fs = new finance;
-            $fs->id_formula=$pkp->id;
-            $fs->save();
-        }
 
         $isipkp = tipp::where('id_pkp',$id_project)->where('status_data','=','active')->get();
         try{
@@ -1484,11 +1471,10 @@ class pkpController extends Controller
         $datawb = tipp::where('id_pkp',$id_project)->where('status_data','=','active')->get();
         $status_sample = formula::where('workbook_id',$id_project)->where('vv','=','final')->count();
         $hformula = formula::where('workbook_id',$id_project)->count();
-        $formula = formula::where('workbook_id',$id_project)->where('vv','!=','null')->get();
+        $formula = formula::where('workbook_id',$id_project)->where('vv','!=','null')->orderBy('versi','asc')->get();
         $pkp1 = pkp_project::where('id_project',$id_project)->get();
         $data = pkp_project::where('id_project',$id_project)->get();
-        $hasilpanel = hasilpanel::where('id_formula',$id_project)->count();
-        //dd($hasilpanel);
+        $hasilpanel = hasilpanel::where('id_wb',$id_project)->count();
         $data1 = pkp_project::where('id_project',$id_project)
         ->join('tippu','tippu.id_pkp','pkp_project.id_project')->where('status_data','=','active')
         ->get();
@@ -1699,8 +1685,8 @@ class pkpController extends Controller
 
         $project = pkp_project::where('id_project',$id_project)->first();
         $project->status_project='revisi';
-        $project->status_terima='proses';
-        $project->status_terima2='proses';
+        // $project->status_terima='proses';
+        // $project->status_terima2='proses';
         $project->save();
 
         $data = tipp::where('id_pkp',$id_project)->where('revisi',$revisi)->where('turunan',$turunan)->first();

@@ -34,7 +34,6 @@ class listpkpController extends Controller
 {
     public function __construct(){
         $this->middleware('auth');
-        $this->middleware('rule:marketing' || 'rule:user_produk'  || 'rule:kemas');
     }
 
     public function dasboard(){

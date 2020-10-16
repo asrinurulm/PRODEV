@@ -21,17 +21,11 @@ class panelController extends Controller
     public function hasil(Request $request)
     {
         $add_panel = new hasilpanel;
-        $add_panel->id_formula=$request->idf;
+        $add_panel->id_wb=$request->idf;
+        $add_panel->id_formula=$request->wb;
         $add_panel->panel=$request->panel;
         $add_panel->tgl_panel=$request->date;
-        $add_panel->formula=$request->formula;
-        $add_panel->nilai=$request->nilai;
-        $add_panel->hasil=$request->hasil;
-        $add_panel->rata_rata=$request->rata;
-        $add_panel->panelis=$request->panelis;
-        $add_panel->serving=$request->panelis;
         $add_panel->hus=$request->hus;
-        $add_panel->komentar=$request->komentar;
         $add_panel->kesimpulan=$request->kesimpulan;
         $add_panel->save();
 
@@ -45,9 +39,9 @@ class panelController extends Controller
         $idfor = $formula->workbook_id;
         $fo=formula::where('id',$id)->first();
         $panel =panel::all();
-        $pn = hasilpanel::where('id_formula',$formulas)->get();
+        $pn = hasilpanel::where('id_formula',$id)->where('id_wb',$formulas)->get();
         $idf = $formula->id;
-        $cek_panel =hasilpanel::where('id_formula',$formulas)->count();
+        $cek_panel =hasilpanel::where('id_formula',$id)->where('id_wb',$formulas)->count();
         return view('formula.panel')->with([
             'fo' => $fo,
             'myFormula' => $myFormula,
@@ -85,5 +79,13 @@ class panelController extends Controller
         $add_panel->save();
 
         return redirect()->back()->with('status', 'panel '.' Telah Ditambahkan!');
+    }
+
+    public function ajukanpanel($id_formula){
+        $formula = Formula::where('id',$id_formula)->first();
+        $formula->status_panel='sent';
+        $formula->save();
+
+        return redirect()->back();
     }
 }

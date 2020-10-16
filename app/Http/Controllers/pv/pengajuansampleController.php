@@ -10,6 +10,7 @@ use Auth;
 use Redirect;
 use DB;
 
+use App\User;
 use App\dev\formula;
 use App\pkp\pkp_project;
 use App\pkp\tipp;
@@ -29,12 +30,15 @@ class pengajuansampleController extends Controller
 
         $sample = formula::where('id',$for)->first();
         $sample->status_fisibility='proses';
+        $sample->status_panel='proses';
+        $sample->status_storage='proses';
         $sample->vv='approve';
         $sample->save();
 
         $data = tipp::where('id_pkp',$id_project)->where('status_data','=','active')->first();
         $fs = new finance;
-        $fs->id_formula=$data->id_pkp;
+        $fs->id_wb=$data->id_pkp;
+        $fs->id_formula=$for;
         $fs->save();
 
         return redirect::back();
@@ -47,6 +51,8 @@ class pengajuansampleController extends Controller
 
         $sample = formula::where('id',$for)->first();
         $sample->status_fisibility='not_approved';
+        $sample->status_panel='proses';
+        $sample->status_storage='proses';
         $sample->vv='approve';
         $sample->save();
 
@@ -74,6 +80,41 @@ class pengajuansampleController extends Controller
         $for->vv='reject';
         $for->catatan_pv=$request->note;
         $for->save();
+
+        $data = $for->workbook_id;
+
+        // kirim email reject final sample (pengirim, Manager, PV)
+        $isipkp = tipp::where('id_pkp',$for->workbook_id)->where('status_data','=','active')->get();
+        try{
+            Mail::send('manager.infoemailpkp', [
+                'info' => 'Maaf Sampel project PKP yang anda ajukan ditolak karna "'.$request->note.'"',
+                'app'=>$isipkp,],function($message)use($data)
+            {
+                $message->subject('Reject PKP sample');
+                $message->from('app.prodev@nutrifood.co.id', 'Admin PRODEV');
+                
+                $datapkp = pkp_project::where('id_project',$data)->get();
+                foreach($datapkp as $data){
+                    $dept = DB::table('departements')->where('id',$data->tujuankirim)->get();
+                    foreach($dept as $dept){
+                        $user = user::where('id',$dept->manager_id)->get();
+                        foreach($user as $user){
+                            $to = $user->email;
+                            $message->to($to);
+                        }
+                    }
+                    $user1 = user::where('id',$data->userpenerima)->get();
+                    foreach($user1 as $user1){
+                        $cc = [$user1->email,Auth::user()->email];
+                        $message->cc($cc);
+                    }
+                }
+            });
+            return back()->with('status','E-mail Successfully');
+        }
+        catch (Exception $e){
+        return response (['status' => false,'errors' => $e->getMessage()]);
+        }
 
         return redirect::back();
     }

@@ -1,6 +1,5 @@
 @extends('admin.tempadmin')
-@section('title', 'Approval')
-@section('judulhalaman','Edit Data Form')
+@section('title', 'UOM')
 @section('content')
 
 <div class="row">

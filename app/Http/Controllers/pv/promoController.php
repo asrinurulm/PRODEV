@@ -780,7 +780,7 @@ class promoController extends Controller
                 'waktu' => $request->waktu,
             ],function($message)use($request)
             {
-                $message->subject('PROJECT PKP PROMO');
+                $message->subject('PROJECT PKP PROMO-'.$request->name);
                 $message->from('app.prodev@nutrifood.co.id', 'Admin PRODEV');
                 //sent email to manager
                 $dept = DB::table('departements')->where('id',$request->kirim)->get();

@@ -12,7 +12,7 @@
       @foreach($formulas as $formula)
       <div class="form-group text-center">
         <label class="control-label col-md-12 col-sm-5 col-xs-12" for="last-name"><b>Nama produk</b></label>
-        <input value="{{ $formula->datapkpp->project_name}}" class="form-control col-md-12 col-xs-12 text-center" readonly>
+        <input value="{{ $formula->workbook->datapkpp->project_name}}" class="form-control col-md-12 col-xs-12 text-center" readonly>
       </div>
       <div class="form-group text-center">
         <label class="control-label col-md-12 col-sm-5 col-xs-12" for="last-name"><b>Tanggal terima</b></label>
@@ -20,11 +20,11 @@
       </div>
       <div class="form-group text-center">
         <label class="control-label col-md-12 col-sm-5 col-xs-12" for="last-name"><b>No.PKP</b></label>
-        <input value="{{ $formula->datapkpp->pkp_number }}" class="form-control col-md-12 col-xs-12 text-center" readonly>
+        <input value="{{ $formula->workbook->datapkpp->pkp_number }}{{ $formula->workbook->datapkpp->ket_no }}" class="form-control col-md-12 col-xs-12 text-center" readonly>
       </div>
       <div class="form-group text-center">
         <label class="control-label col-md-12 col-sm-5 col-xs-12" for="last-name"><b>Idea</b></label>
-        <textarea class="form-control col-md-12 col-xs-12 text-center" rows="2" disabled>{{ $formula->idea }}</textarea>
+        <textarea class="form-control col-md-12 col-xs-12 text-center" rows="2" disabled>{{ $formula->workbook->idea }}</textarea>
       </div><br>
       @endforeach
       <br>
@@ -55,10 +55,7 @@
             <tbody>
               <input type="hidden" name="cek_lab" maxlength="45" id="lab" required="required" value="{{count($lab2)}}" class="form-control col-md-7 col-xs-12">
               <div class="col-md-1 col-sm-1 col-xs-12">
-                <input type="hidden" name="finance" maxlength="45" required="required" value="{{$fe->id_feasibility}}" class="form-control col-md-7 col-xs-12">
-              </div>
-              <div class="col-md-1 col-sm-1 col-xs-12">
-                <input type="hidden" name="finance" maxlength="45" required="required" value="{{$fe->id_feasibility}}" class="form-control col-md-7 col-xs-12">
+                <input type="hidden" name="finance" maxlength="45" required="required" value="" class="form-control col-md-7 col-xs-12">
               </div>
               @foreach($lab2 as $key => $labs)
               <tr>
@@ -81,7 +78,7 @@
             </tbody>
           </table>
           <center>
-            <a href="{{ route('myFeasibility',$id) }}" class="btn btn-danger btn-sm" type="submit">Cancel</a>
+            <a href="{{ route('workbook.Feasibility',$fe->id_formula) }}" class="btn btn-danger btn-sm" type="submit">Cancel</a>
             <button class="btn btn-warning btn-sm" type="reset">Reset</button>
             <button type="submit" onclick="return confirm('Yakin Dengan Data Yang Anda Masukan??')" class="btn btn-primary btn-sm">Submit</button>
             {{ csrf_field() }}
@@ -116,7 +113,7 @@
             @endforeach
           </table>
           <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
-            <a href="{{ route('myFeasibility',$id) }}" class="btn btn-info" type="submit">Selesai</a>
+            <a href="{{ route('myFeasibility',$fe->id_formula) }}" class="btn btn-info" type="submit">Selesai</a>
           </div>
           @endif
         </div>

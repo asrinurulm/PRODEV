@@ -41,7 +41,7 @@ class PengajuanFormulaController extends Controller
         $data->pengajuan_sample='sent';
         $data->save();
         
-        return Redirect::back()->with('status', 'Formula '.$formula->versi.'.'.$formula->turunan.' Telah Di Ajukan VP');
+        return Redirect::back()->with('status', 'Formula '.$formula->versi.'.'.$formula->turunan.' Telah Di Ajukan ke PV');
     }
 
     public function fs($id){

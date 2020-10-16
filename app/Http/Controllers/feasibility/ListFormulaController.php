@@ -17,9 +17,11 @@ class ListFormulaController extends Controller
     }
 
     public function index(){
-        $formulas = tipp::join('formulas','formulas.workbook_id','=','tippu.id_pkp')->where('status_fisibility','proses')->get();
+        $wb = pkp_project::where('status_project','=','proses')->get();
+        $formulas = formula::where('status_fisibility','!=','not_approved')->get();
         return view('feasibility.formula')->with([
-            'formulas' => $formulas
+            'formulas' => $formulas,
+            'wb' => $wb
         ]);
     }
 

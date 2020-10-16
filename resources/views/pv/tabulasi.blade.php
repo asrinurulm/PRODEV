@@ -84,12 +84,14 @@
                   </div>
                 </div>
                 <!-- Modal Selesai -->
+                <p><label><input type="checkbox" id="checkAllpkpp1"/> Check all</label></p>
                 <table class="Table table-bordered" style="max-height:400px">
                   <thead>
                     <tr style="font-weight: bold;color:white;background-color: #2a3f54;">
                       <td></td>
                       <td class="text-center">No</td>
                       <th class="text-center">Brand</th>
+                      <th class="text-center">Kemas</th>
                       <th class="text-center">priority</th>
                       <th class="text-center" width="40%">Idea</th>
                       <th class="text-center">Age</th>
@@ -113,9 +115,33 @@
                   <tbody>
                     @foreach($datapkp as $Dpkp)
                     <tr>
-                      <td><input type="checkbox" class="cekbox" name="datapkpp[]" id="cekbox" value="{{$Dpkp->id_project}}"></td>
+                      <td><input type="checkbox" class="cekbox1" name="datapkpp[]" id="cekbox" value="{{$Dpkp->id_project}}"></td>
                       <td>{{$Dpkp->pkp_number}}{{$Dpkp->ket_no}}</td>
                       <td>{{$Dpkp->id_brand}}</td>
+                      <td>
+                        @if($Dpkp->datapkp->kemas_eksis!=NULL)
+                        @if($Dpkp->datapkp->kemas->tersier!=NULL)
+                        {{ $Dpkp->datapkp->kemas->tersier }}{{ $Dpkp->datapkp->kemas->s_tersier }}
+                        @elseif($pkp->tersier==NULL)
+                        @endif
+
+												@if($Dpkp->datapkp->kemas->sekunder1!=NULL)
+												X {{ $Dpkp->datapkp->kemas->sekunder1 }}{{ $Dpkp->datapkp->kemas->s_sekunder1}}
+												@elseif($Dpkp->datapkp->kemas->sekunder1==NULL)
+												@endif
+
+												@if($Dpkp->datapkp->kemas->sekunder2!=NULL)
+												X {{ $Dpkp->datapkp->kemas->sekunder2 }}{{ $Dpkp->datapkp->kemas->s_sekunder2 }}
+												@elseif($Dpkp->datapkp->sekunder2==NULL)
+												@endif
+
+                        @if($Dpkp->datapkp->kemas->primer!=NULL)
+												X{{ $Dpkp->datapkp->kemas->primer }}{{ $Dpkp->datapkp->kemas->s_primer }}
+												@elseif($Dpkp->datapkp->kemas->primer==NULL)
+												@endif
+                        @elseif($Dpkp->datapkp->primer==NULL)
+                        @endif
+                      </td>
                       <td class="text-center">
                         @if($Dpkp->prioritas==1)
                         <span class="label label-danger">Priority 1</span>
@@ -648,6 +674,15 @@
 
   $("#checkAllpkp1").change(function () {
     $(".data1").prop('checked', $(this).prop("checked"));
+  });
+
+// PKP2
+$("#checkAllpkpp").change(function () {
+    $(".cekbox").prop('checked', $(this).prop("checked"));
+  });
+
+  $("#checkAllpkpp1").change(function () {
+    $(".cekbox1").prop('checked', $(this).prop("checked"));
   });
 
   // PDF
