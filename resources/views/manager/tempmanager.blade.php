@@ -96,7 +96,6 @@
                       <li><a href="{{ route('arsen')}}">Logam Berat</a></li>
                     </ul>
                   </li>
-                  <li class="mt"><a href="{{ route('menucalender') }}"><i class="fa fa-calendar"></i><span>Project Calendar</span></a></li>
                 </ul>
               </div>
             </div>

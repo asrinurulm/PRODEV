@@ -63,13 +63,13 @@
           <div class="x_content">
             <div class="col-md-12 col-xs-12">
               
-          <?php $date = Date('j-F-Y'); ?>
-          <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Created Date</label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <input required id="date" value="{{$date}}" required="required" class="form-control col-md-12 col-xs-12" type="text" name="date" readonly>
-            </div>
-          </div>
+              <?php $date = Date('j-F-Y'); ?>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Created Date</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input required id="date" value="{{$date}}" required="required" class="form-control col-md-12 col-xs-12" type="text" name="date" readonly>
+                </div>
+              </div>
               <div class="form-group row">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Project name**</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -83,11 +83,11 @@
                 </div>
               </div>
               <div class="form-group row">
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">versi</label>
-                  <div class="col-md-9 col-sm-9 col-xs-12">
-                    <input id="revisi" disabled value="0.0" class="form-control col-md-12 col-xs-12" type="text" name="versi">
-                  </div>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">versi</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input id="revisi" disabled value="0.0" class="form-control col-md-12 col-xs-12" type="text" name="versi">
                 </div>
+              </div>
             </div>
           </div>
         </div>

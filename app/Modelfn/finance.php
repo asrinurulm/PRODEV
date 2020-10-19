@@ -11,6 +11,11 @@ class finance extends Model
     protected $fillable =['id_feasibility','id_formula','kemungkinan','status_mesin','status_sdm','status_kemas','status_lab','message'];
     
 
+    public function wb()
+    {
+        return $this->hasMany('App\pkp\pkp_project','id','id_wb');
+    }
+
     public function formula()
     {
         return $this->hasMany('App\dev\Formula','id','id_feasibility');

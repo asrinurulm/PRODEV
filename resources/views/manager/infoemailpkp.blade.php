@@ -12,9 +12,7 @@
         <td>&nbsp;</td>
         <td class="container">
           <div class="content">
-            <!-- START CENTERED WHITE CONTAINER -->
             <table class="main">
-              <!-- START MAIN CONTENT AREA -->
               <tr>
                 <td class="wrapper">
                   <table border="0" cellpadding="0" cellspacing="0">
@@ -68,7 +66,7 @@
                                               @endforeach
                                             </table>
                                             <hr>
-                                            Untuk melihat data PKP lengkap, silahkan masuk ke link berikut : https://prodev.nutrifood.co.id </p><br><br><br>
+                                            Untuk melihat data PKP lengkap, silahkan masuk ke link berikut : http://127.0.0.1:8000/pkplihat/{{$pkp->id_pkp}}/{{$pkp->revisi}}/{{$pkp->turunan}} </p><br><br><br>
                                             Terimakasih,<br>
                                             Admin PRODEV
                                           </div>

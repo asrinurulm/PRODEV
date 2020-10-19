@@ -1,6 +1,5 @@
 @extends('admin.tempadmin')
-@section('title', 'DataDepartement')
-@section('judulhalaman','User Management')
+@section('title', 'ADMIN | Data Departement')
 @section('content')
 
 @if (session('status'))
@@ -74,7 +73,7 @@
 										<option selected disabled>--> Select One <--<option>
 										@foreach($users as $user) 
 											@if($user->departement_id==$dept->id)
-											<option value="{{  $user->id }}" {{ ( $user->id == $dept->manager_id ) ? ' selected' : '' }}>{{ $user->role->namaRule }} - {{ $user->name }}</option>
+											<option value="{{  $user->id }}" {{ ( $user->id == $dept->manager_id ) ? ' selected' : '' }}>{{ $user->role->role }} - {{ $user->name }}</option>
 											@endif
 										@endforeach
 									</select>
@@ -96,7 +95,7 @@
   </div>
 </div>
 
-{{-- Add New Departement --}}
+<!-- Add Departement -->
 <div class="modal fade" id="add_dept" role="dialog" aria-labelledby="EWBModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -113,7 +112,9 @@
 				<label for="" class="control-label">Manager</label><br>
 				<select id="manager" name="manager" class="form-control">
 					@foreach($users as $user) 
-					<option value="{{  $user->id }}"">{{ $user->role->namaRule}} - {{ $user->name }}</option>
+						@if($user->role->id==12)
+						<option value="{{  $user->id }}">{{ $user->role->role}} - {{ $user->name }}</option>
+						@endif
 					@endforeach
 				</select>
 				{{ csrf_field() }}
@@ -126,5 +127,6 @@
 		</div>
 	</div>
 </div>
-{{-- selesai --}}
+<!-- Selesai -->
+
 @endsection

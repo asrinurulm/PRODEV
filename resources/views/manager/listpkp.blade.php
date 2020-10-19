@@ -45,6 +45,7 @@
           
           @php $no = 0; @endphp
           @foreach($pkp as $pkp)
+          $out[strtotime($pkp)] = $pkp;
           @if($pkp->status_freeze=='inactive')
             @if($pkp->tujuankirim2=="1")
               @if($pkp->departement->dept==Auth::user()->departement->dept ||  $pkp->departement2->dept==Auth::user()->departement->dept)

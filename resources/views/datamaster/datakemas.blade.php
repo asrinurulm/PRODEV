@@ -1,6 +1,5 @@
 @extends('pv.tempvv')
 @section('title', 'Kemas')
-@section('judulhalaman','Kemas')
 @section('content')
 
 <div class="row">

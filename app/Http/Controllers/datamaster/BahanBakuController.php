@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\dev\Bahan;
 use App\master\Satuan;
+use App\master\kategori;
 use App\master\Subkategori;
 use App\master\Curren;
 use App\master\Kelompok;
@@ -19,12 +20,13 @@ class BahanBakuController extends Controller
     public function __construct(){
 
         $this->middleware('auth');
-        $this->middleware('rule:admin');
+        $this->middleware('rule:admin' || 'rule:user_produk');
     }
 
     public function bahan(){
         $bahans = Bahan::all();
         $satuans = Satuan::all();
+        $kategori = kategori::all();
         $subkategoris = Subkategori::all();
         $currens = Curren::all();
         $kelompoks = Kelompok::all();
@@ -33,6 +35,7 @@ class BahanBakuController extends Controller
             'bahans' => $bahans,
             'satuans' =>$satuans,
             'subkategoris' => $subkategoris,
+            'kategori' => $kategori,
             'currens' => $currens,
             'kelompoks' => $kelompoks,
             'users' => $users]);

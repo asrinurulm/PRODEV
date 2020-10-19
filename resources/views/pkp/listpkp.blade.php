@@ -115,13 +115,13 @@
               @endif
             </th>
             <td class="text-center">
-            @if($pkp->prioritas==1)
-            <span class="label label-primary" style="color:white">prioritas 1</span>
-            @elseif($pkp->prioritas==2)
-            <span class="label label-warning" style="color:white">prioritas 2</span>
-            @elseif($pkp->prioritas==3)
-            <span class="label label-success" style="color:white">prioritas 3</span>
-            @endif
+              @if($pkp->prioritas==1)
+              <span class="label label-primary" style="color:white">prioritas 1</span>
+              @elseif($pkp->prioritas==2)
+              <span class="label label-warning" style="color:white">prioritas 2</span>
+              @elseif($pkp->prioritas==3)
+              <span class="label label-success" style="color:white">prioritas 3</span>
+              @endif
             </th>
             @if($pkp->status_project=='sent')
             <td class="text-center">

@@ -268,6 +268,10 @@
                       <li><a href="{{ route('sku') }}">Active SKU</a></li>
                       <li><a href="{{ route('klaim') }}">Claim Regulation</a></li>
                       <li><a href="{{ route('arsen')}}">Logam Berat</a></li>
+                      @if(auth()->user()->role->namaRule == 'user_produk')
+                      <li><a href="{{ route('bahanbaku') }}">Bahan Baku</a></li>
+                      <li><a href="{{ route('bbrd') }}">Bahan Baku RD</a></li>
+                      @endif
                     </ul>
                   </li>
                   @endif

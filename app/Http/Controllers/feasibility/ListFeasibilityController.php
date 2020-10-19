@@ -17,24 +17,16 @@ class ListFeasibilityController extends Controller
         $this->middleware('auth');
     }
 
-    public function index($id){
-        $myFormula = tipp::where('id_pkp',$id)->first();
-        $dataF = finance::where('id_formula',$id)->get();
-        $jumlahp =pesan::where('user','produksi')->count();
-        $jumlahm =pesan::where('user','inputor')->count();
-        $jumlahl =pesan::where('user','lab')->count();
-        $jumlahk =pesan::where('user','kemas')->count();
-        $kirim = finance::where('id_formula',$id)->get();
-
+    public function index($wb){
+        $workbook = formula::where('id',$wb)->first();
+        $myFormula = tipp::where('id_pkp',$workbook->workbook_id)->first();
+        $dataF = finance::where('id_wb',$workbook->workbook_id)->where('id_formula',$wb)->get();
+        $dF = finance::where('id_wb',$workbook->workbook_id)->where('id_formula',$wb)->first();
         return view('feasibility.feasibility')->with([
             'myFormula' => $myFormula,
-            'id' => $id,
-            'jumlahp' => $jumlahp,
-            'jumlahm' => $jumlahm,
-            'jumlahl' => $jumlahl,
-            'jumlahk' => $jumlahk,
-            'dataF' => $dataF,
-            'kirim' => $kirim
+            'wb' => $wb,
+            'for' => $dF,
+            'dataF' => $dataF
         ]);
     }
 

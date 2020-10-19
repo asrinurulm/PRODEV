@@ -14,7 +14,6 @@ use App\pkp\promo_idea;
 use App\manager\pengajuan;
 use App\pkp\promo;
 use App\users\Departement;
-use App\pkp\data_uom;
 use App\pkp\picture;
 use App\User;
 use App\pkp\tipp;

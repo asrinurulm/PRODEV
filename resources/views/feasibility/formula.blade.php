@@ -13,27 +13,25 @@
           {{-- <a href="{{ route('formula.selesai') }}" type="submit" data-toggle="tooltip" title="Lihat" class="btn btn-info fa fa-folder-open"> Formula Yang Sudah Selesai</a> --}}
         </div><br>
         <tr style="font-weight: bold;color:white;background-color: #2a3f54;">
-          <th class="text-center" width="5%">No</th>
+          <th class="text-center">PKP Number</th>
           <th class="text-center">PV</th>
-          <th class="text-center">no pkp</th>
-          <th class="text-center">Nama Produk</th>
+          <th class="text-center">Project Name</th>
+          <th class="text-center">Brand</th>
           <th class="text-center">Status Sample</th>
-          <th class="text-center">Aksi</th>
+          <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
-        @php $no = 0; @endphp
-        @foreach($formulas as $formula)
-        @php ++$no; @endphp
+        @foreach($wb as $wb)
         <tr>
-          <td class="text-center">{{ $no }}</td>
-          <td class="text-center">{{ $formula->perevisi2->name}}</td>
-          <td>{{ $formula->datapkpp->pkp_number }}{{ $formula->datapkpp->ket_no }}</td>
-          <td>{{ $formula->datapkpp->project_name }}</td>
-          <td>{{ $formula->datapkpp->pengajuan_sample }}</td>
+          <td>{{$wb->pkp_number}}{{$wb->ket_no}}</td>
+          <td class="text-center">{{$wb->datapkp->perevisi2->name}}</td>
+          <td>{{$wb->project_name}}</td>
+          <td>{{$wb->id_brand}}</td>
+          <td></td>
           <td class="text-center">
             <div class="btn-group">
-              <a href="{{ route('myFeasibility',$formula->id_pkp) }}" type="submit" data-toggle="tooltip" title="Lihat" class="btn btn-info fa fa-folder-open"></a>
+                <a class="btn btn-info btn-sm" href="{{ Route('rekappkp',$wb->id_project) }}" data-toggle="tooltip" title="Show"><i class="fa fa-folder-open"></i></a>
             </div>
           </td>
         </tr>

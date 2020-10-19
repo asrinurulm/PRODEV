@@ -186,7 +186,7 @@ class datapanganController extends Controller
         $notif = notification::where('status','=','active')->count();
         $pesan = notification::all();
         $hitungnotif = $pengajuan + $notif;
-        return view('datamaster.akg1')->with([
+        return view('datamaster.akg')->with([
             'akg' => $akg,
             'pesan' => $pesan,
             'notif' =>$notif,

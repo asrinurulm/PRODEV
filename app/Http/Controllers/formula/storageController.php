@@ -28,8 +28,8 @@ class storageController extends Controller
         $idfor = $formula->workbook_id;
         $pn = hasilpanel::all();
         $idf = $formula->id;
-        $storage = storage::where('id_formula',$formulas)->get();
-        $cek_storage =storage::where('id_formula',$formulas)->count();
+        $storage = storage::where('id_formula',$id)->where('id_wb',$formulas)->get();
+        $cek_storage =storage::where('id_formula',$id)->where('id_wb',$formulas)->count();
         return view('formula.storage')->with([
             'fo' => $fo,
             'idf' => $idf,
@@ -46,12 +46,25 @@ class storageController extends Controller
 
     public function hasilnya(Request $request)
     {
+        $this->validate($request, [
+			'filename' => 'required',
+        ]);
+
+        $file = $request->file('filename');
+        $nama = $file->getClientOriginalName();
+        
         $add_st = new storage;
-        $add_st->id_formula=$request->idf;
+        $add_st->id_formula=$request->wb;
+        $add_st->id_wb=$request->idf;
         $add_st->no_PST=$request->spt;
         $add_st->suhu=$request->suhu;
         $add_st->estimasi_selesai=$request->estimasi;
+        $add_st->data_file=$nama;
         $add_st->save();
+
+        $tujuan_upload = 'data_file';
+    	$file->move($tujuan_upload,$file->getClientOriginalName());
+    
         return redirect()->back();
     }
 
@@ -81,5 +94,13 @@ class storageController extends Controller
         $storage = storage::where('id',$id)->delete();
 
         return redirect()->back()->with('status','proses storage'.' Telah Dihapus! ');
+    }
+
+    public function ajukanstorage($id_formula){
+        $formula = Formula::where('id',$id_formula)->first();
+        $formula->status_storage='sent';
+        $formula->save();
+
+        return redirect()->back();
     }
 }

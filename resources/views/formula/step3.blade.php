@@ -73,12 +73,13 @@ input::-webkit-inner-spin-button {
 <div class="row">
   @include('formerrors')
   <div class="col-md-3"></div>
-  <div class="col-md-8">
+  <div class="col-md-7">
     <div class="tabbable">
       <ul class="nav nav-tabs wizard">
-        <li class="active"><a href="{{ route('step2',[ $idfor, $idf]) }}"><span class="nmbr">1</span>Penyusunan</a></li>
-        <li class="active"><a href="{{ route('summarry',[ $idfor, $idf]) }}"><span class="nmbr">2</span>Summary</a></li>
-        <li class="completed"><a href="{{ route('step3',[ $idfor, $idf]) }}"><span class="nmbr">3</span>Premix</a></li>
+        <li class="active"><a href="{{ route('step1',[ $idfor, $idf]) }}"><span class="nmbr">1</span>Information</a></li>
+        <li class="active"><a href="{{ route('step2',[ $idfor, $idf]) }}"><span class="nmbr">2</span>Penyusunan</a></li>
+        <li class="active"><a href="{{ route('summarry',[ $idfor, $idf]) }}"><span class="nmbr">3</span>Summary</a></li>
+        <li class="completed"><a href="{{ route('step3',[ $idfor, $idf]) }}"><span class="nmbr">4</span>Premix</a></li>
       </ul>
     </div>
   </div>

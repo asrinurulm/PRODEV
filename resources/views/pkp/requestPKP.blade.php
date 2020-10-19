@@ -25,6 +25,7 @@
   </div>
 </div>
 
+<a href="{{route('cetak')}}" class="btn btn-sm btn-warning">Cetak</a>
 <div class="row">
   <div class="col-md-12 col-xs-12">
     <table class="table table-bordered">

@@ -4,13 +4,13 @@
 @section('content')
 
 <div class="row">
-  <div class="col-md-3"></div>
-  <div class="col-md-8">
+  <div class="col-md-3 col-sm-3 col-xs-12"></div>
+  <div class="col-md-8 col-sm-8 col-xs-12">
     <div class="tabbable">
       <ul class="nav nav-tabs wizard">
-        <li class="active"><a href="" ><span class="nmbr">1</span>Information</a></li>
-        <li class="completed"><a href=""><span class="nmbr">2</span>PKP</a></li>
-        <li class="active"><a href=""><span class="nmbr">3</span>File & Image</a></li>
+        <li class="active"><a href="" ><span class="nmbr">1</span> Information</a></li>
+        <li class="completed"><a href=""><span class="nmbr">2</span> PKP</a></li>
+        <li class="active"><a href=""><span class="nmbr">3</span> File</a></li>
       </ul>
     </div>
   </div>
@@ -57,14 +57,14 @@
               </select>
             </div>
             <label for="middle-name" class="control-label col-md-1 col-sm-1 col-xs-12" style="color:#31a9b8">SES* </label>
-              <div class="col-md-3 col-sm-3 col-xs-12">
-                <select placeholder="SES" class="form-control form-control-line items" name="ses[]"   multiple="multiple">
-                  <option disabled="">-- Select One --</option>
-                  @foreach($ses as $ses)
-                  <option value="{{$ses->ses}}">{{$ses->ses}}</option>
-                  @endforeach
-                </select>
-              </div><br><br><br>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+              <select placeholder="SES" class="form-control form-control-line items" name="ses[]"   multiple="multiple">
+                <option disabled="">-- Select One --</option>
+                @foreach($ses as $ses)
+                <option value="{{$ses->ses}}">{{$ses->ses}}</option>
+                @endforeach
+              </select>
+            </div><br><br><br>
             <div class="form-group row">
               <label for="middle-name" class="control-label col-md-1 col-sm-2 col-xs-12"></label>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
               <label for="middle-name" class="control-label col-md-2 col-sm-2 col-xs-12" style="color:#31a9b8"> &nbsp  &nbsp Remarks SES* : </label>
@@ -83,7 +83,7 @@
      			      <input type="radio" name="data" oninput="minus()" id="radio_minus"> - &nbsp /  
      			      <input type="radio" name="data" oninput="to()" id="radio_to"> To 
               </div>
-              <div class="col-md-1 col-sm-2 col-xs-12" id="umur"></div>
+              <div class="col-md-2 col-sm-2 col-xs-12" id="umur"></div>
             </div>
           </div>
           <?php $last = Date('j-F-Y'); ?>
@@ -242,7 +242,7 @@
           </div>
           <div class="form-group">
             <label class="control-label col-md-2 col-sm-3 col-xs-12" style="color:#cf3721">No category BPOM^</label>
-            <div class="col-md-2 col-sm-8 col-xs-12">
+            <div class="col-md-2 col-sm-4 col-xs-12">
               <select class="form-control"  id="bpom" name="bpom">
                 <option value=""></option>
                 @foreach($pangan as $dp)
@@ -250,8 +250,8 @@
                 @endforeach
               </select>
             </div>
-            <label class="control-label" style="color:#cf3721"></label>
-            <div class="col-md-3 col-sm-8 col-xs-12">
+            <label class="control-label col-md-0 col-sm-0" style="color:#cf3721"></label>
+            <div class="col-md-3 col-sm-4 col-xs-12">
               <select name="katbpom"  id="katbpom" class="form-control">
                 <option value=""></option>
                 @foreach($pangan as $kat)
@@ -336,9 +336,9 @@
               </table>
             </div>
           </div>
-          <div class="col-md-6 col-md-offset-5">
-            <button type="reset" class="btn btn-danger">Reset</button>
-            <button type="submit" class="btn btn-primary">Submit And Next</button>
+          <div class="col-md-6 col-md-offset-5 col-sm-offset-3">
+            <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+            <button type="submit" class="btn btn-primary btn-sm">Submit And Next</button>
             {{ csrf_field() }}
           </div>
         </div>
@@ -355,157 +355,156 @@
   $(document).ready(function() {
 
     var idkomponen = []
-  <?php foreach($komponen as $key => $value) { ?>
-    if(!idkomponen){
-      idkomponen += [ { '<?php echo $key; ?>' : '<?php echo $value->id; ?>', } ];
-    } else { idkomponen.push({ '<?php echo $key; ?>' : '<?php echo $value->id; ?>', }) }
-  <?php } ?>
+    <?php foreach($komponen as $key => $value) { ?>
+      if(!idkomponen){
+        idkomponen += [ { '<?php echo $key; ?>' : '<?php echo $value->id; ?>', } ];
+      } else { idkomponen.push({ '<?php echo $key; ?>' : '<?php echo $value->id; ?>', }) }
+    <?php } ?>
 
-  var komponen = []
-  <?php foreach($komponen as $key => $value) { ?>
-    if(!komponen){
-      komponen += [ { '<?php echo $key; ?>' : '<?php echo $value->komponen; ?>', } ];
-    } else { komponen.push({ '<?php echo $key; ?>' : '<?php echo $value->komponen; ?>', }) }
-  <?php } ?>
+    var komponen = []
+    <?php foreach($komponen as $key => $value) { ?>
+      if(!komponen){
+        komponen += [ { '<?php echo $key; ?>' : '<?php echo $value->komponen; ?>', } ];
+      } else { komponen.push({ '<?php echo $key; ?>' : '<?php echo $value->komponen; ?>', }) }
+    <?php } ?>
 
-  var komponen1 = '';
-    for(var i = 0; i < Object.keys(komponen).length; i++){
-    komponen1 += '<option value="'+idkomponen[i][i]+'">'+komponen[i][i]+'</option>';
-  }
+    var komponen1 = '';
+      for(var i = 0; i < Object.keys(komponen).length; i++){
+      komponen1 += '<option value="'+idkomponen[i][i]+'">'+komponen[i][i]+'</option>';
+    }
 
-  var i = 1;
-  var a = {!! json_encode($Ddetail) !!};
-  $("#add_row").click(function() {
-    $('#addr' + i).html("<input type='hidden' value='"+(a+i)+"' name='iddetail' id='iddetail'><td><select class='form-control items' name='komponen[]' id='komponen"+(a+i)+"' >"+komponen1+
-      "</select></td><td><select name='klaim[]' class='form-control items' id='klaimm"+(a+i)+"'>"+
-      "</select></td><td><select name='detail[]' multiple='multiple' class='form-control items' id='detaill"+(a+i)+"'>"+
-      "</select></td><td><textarea type='text' class='form-control' name='ket[]' id='ket'></textarea></td><td></td>");
+    var i = 1;
+    var a = {!! json_encode($Ddetail) !!};
+    $("#add_row").click(function() {
+      $('#addr' + i).html("<input type='hidden' value='"+(a+i)+"' name='iddetail' id='iddetail'><td><select class='form-control items' name='komponen[]' id='komponen"+(a+i)+"' >"+komponen1+
+        "</select></td><td><select name='klaim[]' class='form-control items' id='klaimm"+(a+i)+"'>"+
+        "</select></td><td><select name='detail[]' multiple='multiple' class='form-control items' id='detaill"+(a+i)+"'>"+
+        "</select></td><td><textarea type='text' class='form-control' name='ket[]' id='ket'></textarea></td><td></td>");
 
-      var b = a+i;
-      console.log(b);
-      $('#komponen' + b).on('change', function(){
-        var myId = $(this).val();
+        var b = a+i;
+        console.log(b);
+        $('#komponen' + b).on('change', function(){
+          var myId = $(this).val();
+            if(myId){
+              $.ajax({
+                url: '{{URL::to('getdetail')}}/'+myId,
+                type: "GET",
+                dataType: "json",
+                beforeSend: function(){
+                $('#loader').css("visibility", "visible");
+            },
+
+            success:function(data){
+              console.log(data)
+                $('#detaill' + b).empty();
+                $.each(data, function(key, value){
+                  $('#detaill' + b).append('<option value="'+ key +'">' + value + '</option>');
+                });
+              console.log(data)
+              },
+              complete: function(){
+                $('#loader').css("visibility","hidden");
+            }
+          });
+
+          }
+          else{
+            $('#detaill' + b).empty();
+          }
+        });
+
+        $('#komponen'+b).on('change', function(){
+          var myId = $(this).val();
           if(myId){
             $.ajax({
-              url: '{{URL::to('getdetail')}}/'+myId,
-              type: "GET",
-              dataType: "json",
-              beforeSend: function(){
+            url: '{{URL::to('getkomponen')}}/'+myId,
+            type: "GET",
+            dataType: "json",
+            beforeSend: function(){
+                $('#loader').css("visibility", "visible");
+            },
+
+            success:function(data){
+              console.log(data)
+              $('#klaimm'+b).empty();
+              $.each(data, function(key, value){
+                $('#klaimm'+b).append('<option value="'+ key +'">' + value + '</option>');
+              });
+              console.log(data)
+            },
+            complete: function(){
+              $('#loader').css("visibility","hidden");
+            }
+          });
+
+        }
+        else{
+            $('#klaimm'+b).empty();
+        }
+      });
+      $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
+      i++;
+    });
+
+    $('#komponen').on('change', function(){
+      var myId = $(this).val();
+        if(myId){
+          $.ajax({
+          url: '{{URL::to('getkomponen')}}/'+myId,
+          type: "GET",
+          dataType: "json",
+          beforeSend: function(){
               $('#loader').css("visibility", "visible");
           },
 
           success:function(data){
             console.log(data)
-              $('#detaill' + b).empty();
+              $('#klaimm').empty();
               $.each(data, function(key, value){
-                $('#detaill' + b).append('<option value="'+ key +'">' + value + '</option>');
+                  $('#klaimm').append('<option value="'+ key +'">' + value + '</option>');
               });
-            console.log(data)
-            },
-            complete: function(){
-              $('#loader').css("visibility","hidden");
-          }
+          console.log(data)
+          },
+          complete: function(){
+                $('#loader').css("visibility","hidden");
+            }
         });
 
         }
         else{
-          $('#detaill' + b).empty();
-        }
-      });
-
-      $('#komponen'+b).on('change', function(){
-    var myId = $(this).val();
-      if(myId){
-        $.ajax({
-        url: '{{URL::to('getkomponen')}}/'+myId,
-        type: "GET",
-        dataType: "json",
-        beforeSend: function(){
-            $('#loader').css("visibility", "visible");
-        },
-
-        success:function(data){
-          console.log(data)
-            $('#klaimm'+b).empty();
-            $.each(data, function(key, value){
-                $('#klaimm'+b).append('<option value="'+ key +'">' + value + '</option>');
-            });
-        console.log(data)
-        },
-        complete: function(){
-              $('#loader').css("visibility","hidden");
-          }
-      });
-
-      }
-      else{
-          $('#klaimm'+b).empty();
-      }
-  });
-    $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
-    i++;
-  });
-
-  $('#komponen').on('change', function(){
-    var myId = $(this).val();
-      if(myId){
-        $.ajax({
-        url: '{{URL::to('getkomponen')}}/'+myId,
-        type: "GET",
-        dataType: "json",
-        beforeSend: function(){
-            $('#loader').css("visibility", "visible");
-        },
-
-        success:function(data){
-          console.log(data)
             $('#klaimm').empty();
-            $.each(data, function(key, value){
-                $('#klaimm').append('<option value="'+ key +'">' + value + '</option>');
-            });
-        console.log(data)
-        },
-        complete: function(){
-              $('#loader').css("visibility","hidden");
-          }
-      });
+        }
+    });
 
-      }
-      else{
-          $('#klaimm').empty();
-      }
-  });
+    $('#komponen').on('change', function(){
+      var myId = $(this).val();
+        if(myId){
+          $.ajax({
+          url: '{{URL::to('getdetail')}}/'+myId,
+          type: "GET",
+          dataType: "json",
+          beforeSend: function(){
+              $('#loader').css("visibility", "visible");
+          },
 
-  $('#komponen').on('change', function(){
-    var myId = $(this).val();
-      if(myId){
-        $.ajax({
-        url: '{{URL::to('getdetail')}}/'+myId,
-        type: "GET",
-        dataType: "json",
-        beforeSend: function(){
-            $('#loader').css("visibility", "visible");
-        },
-
-        success:function(data){
+          success:function(data){
+            console.log(data)
+              $('#detaill').empty();
+              $.each(data, function(key, value){
+                  $('#detaill').append('<option value="'+ key +'">' + value + '</option>');
+              });
           console.log(data)
-            $('#detaill').empty();
-            $.each(data, function(key, value){
-                $('#detaill').append('<option value="'+ key +'">' + value + '</option>');
-            });
-        console.log(data)
-        },
-        complete: function(){
-              $('#loader').css("visibility","hidden");
-          }
-      });
+          },
+          complete: function(){
+                $('#loader').css("visibility","hidden");
+            }
+        });
 
-      }
-      else{
-          $('#katbpom').empty();
-      }
-  });
-
+        }
+        else{
+            $('#katbpom').empty();
+        }
+    });
   });
 
 </script>

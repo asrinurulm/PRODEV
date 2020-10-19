@@ -6,12 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\dev\Workbook;
 use App\dev\Formula;
-use App\devnf\tb_vitmin;
-use App\devnf\tb_nutrition;
 use App\devnf\hasilpanel;
 use App\devnf\storage;
-use App\devnf\hasilstorage;
-use App\nutfact\tb_parameter;
+use App\Modelfn\finance;
 use App\dev\Fortail;
 use App\dev\Premix;
 use App\dev\Pretail;
@@ -35,14 +32,15 @@ class FormulaController extends Controller
         // New Formula        
         $formulas = new Formula;
         $formulas->workbook_id = $request->workbook_id;
-        $formulas->kode_formula = $request->kode_formula;
         $formulas->formula = $request->formula;
-        $formulas->serving_size = $request->target_serving;
+		$formulas->serving_size = $request->target_serving;
+		$formulas->satuan=$request->satuan;
+		$formulas->berat_jenis=$request->berat_jenis;
         $formulas->revisi = '0';
         $formulas->versi = 1;   
         $formulas->save();
         
-        return redirect()->route('step2',['id_workbook' => $request->workbook_id, 'id_formula' => $formulas->id])->with('status', 'Formula '.$formulas->nama_produk.' Telah Ditambahkan!');
+        return redirect()->route('step1',['id_workbook' => $request->workbook_id, 'id_formula' => $formulas->id])->with('status', 'Formula '.$formulas->nama_produk.' Telah Ditambahkan!');
     }
 
     // Hapus Formula-----------------------------------------------------------------------------------------------------    
@@ -50,7 +48,6 @@ class FormulaController extends Controller
 		//dd($id);
 		$formula = Formula::where('id',$id)->first();
         // Delete Pesan
-        $pesan = Pesan::where('formula_id',$id)->delete();
         $fortails = Fortail::where('formula_id',$id)->get();
         foreach($fortails as $fortail){
             $premixs = Premix::where('fortail_id',$fortail->id)->get();
@@ -74,7 +71,6 @@ class FormulaController extends Controller
 		$storage = storage::where('id_formula',$id)->count();
 		if($storage>='1'){
 			$storage1 = storage::where('id_formula',$id)->delete();
-			$hasilst = hasilstorage::where('id_formula',$id)->delete();
 		}
         return Redirect::back()->with('error', 'Formula Versi '.$formula->versi.'.'.$formula->turunan.' Telah Dihapus!');
     }
@@ -82,33 +78,12 @@ class FormulaController extends Controller
     // Detail Formula----------------------------------------------------------------------------------------------------
     public function detail($id,$for){
         $data       = formula::with('Workbook')->where('workbook_id',$id)->where('id',$for)->get();
-        $ing        = tb_nutrition::with('get_bahan','get_btp')->get();
-        $tampilkan  = tb_parameter::with('get_akg')->offset(23)->limit(84)->get();
-        
-        //NUTFACT BAYANGAN
-        $vit_a      = tb_vitmin::select('target')->where('parameter','12')->get();
-        $thi        = tb_vitmin::select('target')->where('parameter','2')->get();
-        $rib        = tb_vitmin::select('target')->where('parameter','10')->get();
-        $nia        = tb_vitmin::select('target')->where('parameter','3')->get();
-        $b5         = tb_vitmin::select('target')->where('parameter','20')->get();
-        $pyr        = tb_vitmin::select('target')->where('parameter','21')->get();
-        $b7         = tb_vitmin::select('target')->where('parameter','11')->get();
-        $b12        = tb_vitmin::select('target')->where('parameter','60')->get();
-        $asam       = tb_vitmin::select('target')->where('parameter','4')->get();
-        $vit_c      = tb_vitmin::select('target')->where('parameter','61')->get();
-        $vit_d      = tb_vitmin::select('target')->where('parameter','62')->get();
-        $vit_e      = tb_vitmin::select('target')->where('parameter','14')->get();
-        $mag        = tb_vitmin::select('target')->where('parameter','47')->get();
-        $man        = tb_vitmin::select('target')->where('parameter','16')->get();
-        $zin        = tb_vitmin::select('target')->where('parameter','48')->get();
-        $lod        = tb_vitmin::select('target')->where('parameter','22')->get();
-        $zat        = tb_vitmin::select('target')->where('parameter','45')->get();
-        $sel        = tb_vitmin::select('target')->where('parameter','49')->get();
-        $mol        = tb_vitmin::select('target')->where('parameter','69')->get();
-        $ino        = tb_vitmin::select('target')->where('parameter','68')->get();
+		$fs 		= finance::where('id_formula',$for)->get();
         
         $idf = $id;
 		$formula = Formula::where('workbook_id',$id)->where('id',$for)->first();
+		$panel = hasilpanel::where('id_formula',$for)->where('id_wb',$id)->get();
+		$storage = storage::where('id_formula',$for)->where('id_wb',$id)->get();
 		//dd($formula->id);
 		$fortails = Fortail::where('formula_id',$formula->id)->get();
         $ingredient = DB::table('fortails')
@@ -137,7 +112,29 @@ class FormulaController extends Controller
                 'id' => $fortail->id,
                 'kode_komputer' => $fortail->kode_komputer,
                 'nama_sederhana' => $fortail->nama_sederhana,
+                'alternatif' => $fortail->alternatif,
+                'alternatif2' => $fortail->alternatif2,
+                'alternatif3' => $fortail->alternatif3,
+                'alternatif4' => $fortail->alternatif4,
+                'alternatif5' => $fortail->alternatif5,
+                'alternatif6' => $fortail->alternatif6,
+                'alternatif7' => $fortail->alternatif7,
                 'nama_bahan' => $fortail->nama_bahan,
+                'nama_bahan1' => $fortail->nama_bahan1,
+                'nama_bahan2' => $fortail->nama_bahan2,
+                'nama_bahan3' => $fortail->nama_bahan3,
+                'nama_bahan4' => $fortail->nama_bahan4,
+                'nama_bahan5' => $fortail->nama_bahan5,
+                'nama_bahan6' => $fortail->nama_bahan6,
+				'nama_bahan7' => $fortail->nama_bahan7,
+				'principle' => $fortail->principle,
+				'principle1' => $fortail->principle1,
+				'principle2' => $fortail->principle2,
+				'principle3' => $fortail->principle3,
+				'principle4' => $fortail->principle4,
+				'principle5' => $fortail->principle5,
+				'principle6' => $fortail->principle6,
+				'principle7' => $fortail->principle7,
                 'per_batch' => $fortail->per_batch,
                 'per_serving' => $fortail->per_serving,
                 'granulasi' => $fortail->granulasi,
@@ -442,14 +439,14 @@ class FormulaController extends Controller
             'total_harga_per_kg' => $total_harga_per_kg,                       
 		]);
 
-        return view('devwb/detailformula',  compact('ing','tampilkan','AMC','AMC2','AMC3','AMC4','AMC5','AMC6','AMC7',
-        'data','vit_a','thi','rib','nia','b5','pyr','b7','b12','asam','vit_c',
-        'vit_d','vit_e','mag','man','zin','lod','zat','sel','mol','ino' ,'id'  ))->with([
+        return view('devwb/detailformula',  compact('fs','data' ,'id'  ))->with([
             'ada'     => $ada,
             'formula' => $formula,
             'detail_formula' =>  $detail_formula,
             'granulasi' => $granulasi,
-            'gp' => $gp,
+			'gp' => $gp,
+			'panel' => $panel,
+			'storage' => $storage,
             'detail_harga' => $detail_harga,
             'total_harga' => $total_harga
         ]);

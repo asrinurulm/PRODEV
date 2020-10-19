@@ -176,11 +176,11 @@
 
 						<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
 							@foreach($dataF as $dF)
-							<a href="{{ route('uploadkemas',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}" class="btn btn-danger" type="submit">Kembali</a>
+							<a href="{{ route('uploadkemas',['id_feasibility' => $dF->id_feasibility, 'id_formula' => $dF->id_formula]) }}" class="btn btn-danger btn-sm" type="submit"><li class="fa fa-arrow-circle-left"></li> Back</a>
 							@endforeach
 							@foreach($dataF as $fs)
-							<a href="{{ route('myFeasibility',$fs->id_formula) }}" class="btn btn-info" type="submit">selesai</a>
-						@endforeach
+							<a href="{{ route('myFeasibility',$fs->id_formula) }}" class="btn btn-info btn-sm" type="submit"><li class=" fa fa-check"></li> Finish</a>
+							@endforeach
 						</div>
 					</div>
 				</div>
@@ -335,9 +335,11 @@
 								</tr>
 							</tbody>
 						</table><br>
+						<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
 						@foreach($dataF as $fs)
-							<a href="{{ route('myFeasibility',$fs->id_formula) }}" class="btn btn-info" type="submit">selesai</a>
+							<a href="{{ route('myFeasibility',$fs->id_formula) }}" class="btn btn-info btn-sm" type="submit"><li class=" fa fa-check"></li> Finish</a>
 						@endforeach
+						</div>
 					</div>
 				</div>
 			</div>    
@@ -389,7 +391,7 @@
 						</table>
 						<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
 						@foreach($dataF as $fs)
-							<a href="{{ route('myFeasibility',$fs->id_formula) }}" class="btn btn-info" type="submit">selesai</a>
+							<a href="{{ route('myFeasibility',$fs->id_formula) }}" class="btn btn-info btn-sm" type="submit"><li class=" fa fa-check"></li> Finish</a>
 						@endforeach
 						</div>
 					</div>
