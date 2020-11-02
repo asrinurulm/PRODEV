@@ -7,9 +7,67 @@
   <div class="col-md-5 col-xs-12">
 		@foreach($data as $data)
     <div class="x_panel" style="min-height:90px">
-      @if(auth()->user()->role->namaRule != 'user_produk')
+      @if($hitung==0)
+        <a href="{{ route('buatpkp1',$data->id_project)}}" class="btn btn-primary btn-sm" type="button"><li class="fa fa-plus"></li> Add Data</a>
+      @endif
+      @if(auth()->user()->role->namaRule != 'user_produk' && auth()->user()->role->namaRule != 'kemas')
         @if($data->status_project=="revisi")
           <a href="{{ route('datapengajuan')}}" class="btn btn-danger btn-sm" type="button"><li class="fa fa-share"></li> Back</a>
+        @elseif($data->status_project=="draf" )
+          <a href="{{ route('drafpkp')}}" class="btn btn-danger btn-sm" type="button"><li class="fa fa-share"></li> Back</a>
+        @elseif($data->status_project=="sent" || $data->status_project=="close" || $data->status_project=="proses")
+          <a href="{{ route('listpkp')}}" class="btn btn-danger btn-sm" type="button"><li class="fa fa-share"></li> Back</a>
+          @if(auth()->user()->role->namaRule == 'pv_lokal')
+          <button class="btn btn-success btn-sm"  data-toggle="modal" data-target="#edit"><li class="fa fa-edit"></li> Edit Type PKP</button>
+          <!-- modal -->
+          <div class="modal" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">                 
+                  <h3 class="modal-title" id="exampleModalLabel">Confirm Type PKP
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button> </h3>
+                </div>
+                <div class="modal-body">
+                <form class="form-horizontal form-label-left" method="POST" action="{{ route('edittype',$data->id_project) }}" novalidate>
+                  <div class="form-group row">
+                    <label class="control-label text-bold col-md-1 col-sm-3 col-xs-12 text-center">Type</label>
+                    <div class="col-md-11 col-sm-9 col-xs-12">
+                      <select name="type" class="form-control form-control-line" id="type">
+                      @foreach($pkp1 as $pkp1)
+                      <option disabled selected value="{{$pkp1->type}}">
+                        @if($pkp1->type==1)
+                        Maklon
+                        @elseif($pkp1->type==2)
+                        Internal
+                        @elseif($pkp1->type==3)
+                        Maklon/Internal
+                        @endif
+                      </option>
+                      @endforeach
+                      <option value="1">Maklon</option>
+                      <option value="2">Internal</option>
+                      <option value="3">Maklon & Internal</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                @foreach($user as $user)
+                  @if($user->role_id=='1' || $user->role_id=='5' || $user->role_id=='14')
+                  <input type="hidden" value="{{$user->name}}" name="namatujuan[]" id="namatujuan">
+                  <input type="hidden" value="{{$user->email}}" name="emailtujuan[]" id="emailtujuan">
+                  @endif
+                @endforeach
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Submit</button>
+                  {{ csrf_field() }}
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- modal selesai -->
           <button class="btn btn-primary btn-sm" title="note" data-toggle="modal" data-target="#data1{{ $data->id_project  }}"><i class="fa fa-edit"></i> Edit Timeline</a></button>
           <!-- Modal -->
           <div class="modal" id="data1{{ $data->id_project  }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -41,83 +99,76 @@
               </div>
             </div>
           </div>
-          <!-- Modal Selesai -->
-        <button class="btn btn-success btn-sm"  data-toggle="modal" data-target="#edit"><li class="fa fa-edit"></li> Edit Type PKP</button>
-        @elseif($data->status_project=="draf" )
-          <a href="{{ route('drafpkp')}}" class="btn btn-danger btn-sm" type="button"><li class="fa fa-share"></li> Back</a>
-        @elseif($data->status_project=="sent" || $data->status_project=="close" || $data->status_project=="proses")
-          <a href="{{ route('listpkp')}}" class="btn btn-danger btn-sm" type="button"><li class="fa fa-share"></li> Back</a>
+          @endif
         @endif
-      @elseif(auth()->user()->role->namaRule === 'user_produk')
+      @elseif( auth()->user()->role->namaRule === 'kemas')
+        <a href="{{ route('listprojectpkp')}}" class="btn btn-danger btn-sm" type="button"><li class="fa fa-share"></li> Back</a>
+      @elseif(auth()->user()->role->namaRule === 'user_produk') 
         <a href="{{ route('listprojectpkp')}}" class="btn btn-danger btn-sm" type="button"><li class="fa fa-share"></li> Back</a>
         <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#sample{{$data->id_project}}"><i class="fa fa-check"></i> Submit Sample</a></button>
-          <!-- modal -->
-          <div class="modal" id="sample{{$data->id_project}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h3 class="modal-title text-left" id="exampleModalLabel">Submit Sample
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></h3>
-                  </button>
+        <!-- modal -->
+        <div class="modal" id="sample{{$data->id_project}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title text-left" id="exampleModalLabel">Submit Sample
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></h3>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form class="form-horizontal form-label-left" method="POST" action="{{route('samplepkp',$data->id_project)}}" novalidate>
+                <table class="table table-bordered table-hover" id="tabledata">
+      					<thead>
+      						<tr style="font-weight: bold;color:white;background-color: #2a3f54;">
+      					    <th class="text-center" >Sample</th>
+      					    <th class="text-center" >Note</th>
+										<th width="5%"></th>
+      					  </tr>
+      					</thead>
+      					<tbody>
+      						<tr>
+                    <input type="hidden" value="{{$data->id_project}}" name="id">
+      					    <td><input type="text" name='sample[]' class="form-control" /></td>
+      						  <td><textarea rows="2" type="text" required name='note[]' class="form-control" ></textarea></td>
+										<td>
+										<button id="add_data" type="button" class="btn btn-info btn-sm pull-left tr_clone_add"><li class="fa fa-plus"></li> </button>
+										</td>
+									</tr>
+      					</tbody>
+    					</table>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Submit</button>
+                  {{ csrf_field() }}
                 </div>
-                <div class="modal-body">
-                  <form class="form-horizontal form-label-left" method="POST" action="{{route('samplepkp',$data->id_project)}}" novalidate>
-                  <table class="table table-bordered table-hover" id="tabledata">
-      						<thead>
-        						<tr style="font-weight: bold;color:white;background-color: #2a3f54;">
-        					    <th class="text-center" >Sample</th>
-        					    <th class="text-center" >Note</th>
-											<th width="5%"></th>
-      						  </tr>
-      						</thead>
-      						<tbody>
-        						<tr>
-                      <input type="hidden" value="{{$data->id_project}}" name="id">
-      						    <td><input type="text" name='sample[]' class="form-control" /></td>
-        						  <td><textarea rows="2" type="text" required name='note[]' class="form-control" ></textarea></td>
-											<td>
-											<button id="add_data" type="button" class="btn btn-info btn-sm pull-left tr_clone_add"><li class="fa fa-plus"></li> </button>
-											</td>
-										</tr>
-        					</tbody>
-      					</table>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Submit</button>
-                    {{ csrf_field() }}
-                  </div>
-                </form>
-                </div>
+              </form>
               </div>
             </div>
           </div>
-          <!-- Modal Selesai -->
-      @endif
-      
-      @if($hitung==0)
-        <a href="{{ route('buatpkp1',$data->id_project)}}" class="btn btn-primary btn-sm" type="button"><li class="fa fa-plus"></li> Add Data</a>
+        </div>
+        <!-- Modal Selesai -->
       @endif
 
       @foreach($datapkp as $pkp)
-      
-      @if(auth()->user()->role->namaRule != 'user_produk')
-        @if($pkp->status_pkp=='revisi' || $pkp->status_pkp=='draf')
-          @if($pkp->status_data=='active')
-          <a class="btn btn-warning btn-sm" href="{{ route('buatpkp', ['id_pkp' => $pkp->id_pkp,'revisi' => $pkp->revisi, 'turunan' => $pkp->turunan]) }}" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i> Edit</a>
-          @endif
-        @endif
-      @endif
-      
       @if($pkp->kemas_eksis!=NULL)
-        <a class="btn btn-info btn-sm" href="{{ Route('lihatpkp',['id_pkp' => $pkp->id_pkp,'revisi' => $pkp->revisi, 'turunan' => $pkp->turunan]) }}" data-toggle="tooltip" title="Show"><i class="fa fa-folder-open"></i> Show</a>
+      <a class="btn btn-info btn-sm" href="{{ Route('lihatpkp',['id_pkp' => $pkp->id_pkp,'revisi' => $pkp->revisi, 'turunan' => $pkp->turunan]) }}" data-toggle="tooltip" title="Show"><i class="fa fa-folder-open"></i> Show</a>
       @elseif($pkp->kemas_eksis==NULL)
-        <a class="btn btn-info btn-sm" disabled data-toggle="tooltip" title="Please complete the data, to see the final data"><i class="fa fa-folder-open"></i> Show</a>
+      <a class="btn btn-info btn-sm" disabled data-toggle="tooltip" title="Please complete the data, to see the final data"><i class="fa fa-folder-open"></i> Show</a>
+      @endif
+      @if($pkp->status_pkp=='revisi' || $pkp->status_pkp=='draf')
+        @if($pkp->status_data=='active')
+        <a class="btn btn-warning btn-sm" href="{{ route('buatpkp', ['id_pkp' => $pkp->id_pkp,'revisi' => $pkp->revisi, 'turunan' => $pkp->turunan]) }}" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i> Edit</a>
+        @endif
       @endif
       @endforeach
       
       @if($data->author1->Role->id==1 || $data->author1->Role->id==14)
       @else
         <a href="{{route('pkpklaim',$data->id_project)}}" class="btn btn-primary btn-sm" type="submut"><li class="fa fa-tags"></li> Klaim</a>
+      @endif
+      
+      @if(auth()->user()->role->namaRule === 'user_produk')
+      <a href="{{route('showworkbook',$pkp->id_pkp)}}" class="btn btn-success btn-sm"><li class=" fa fa-plus"></li> Workbook</a>
       @endif
     </div>
 
@@ -139,15 +190,45 @@
                 Maklon/Internal
                 @endif
               </td></tr>
-              <tr><td width="20%">PKP Number</td><td> : {{$data->pkp_number}}{{$data->ket_no}}</td></tr>
-							<tr><td>status</td><td> : {{$data->status_data}}</td></tr>
-							<tr><td>Created</td><td> : {{$data->created_date}}</td></tr>
-              <tr><td>Author</td><td> : {{$data->author1->name}}</td></tr>
+              <tr><td width="25%">PKP Number</td><td> : {{$data->pkp_number}}{{$data->ket_no}}</td></tr>
               @if($data->datapkp!=null)
               @foreach($data1 as $data)
               <tr><td>Idea</td> <td> : {{$data->idea}}</td></tr>
+              <tr><td>Packaging Concept</td><td>: 
+              @if($data->kemas_eksis!=NULL)
+                            (
+                            @if($data->kemas->tersier!=NULL)
+                            {{ $data->kemas->tersier }}{{ $pkp->kemas->s_tersier }}
+                            @elseif($data->kemas->tersier==NULL)
+                            @endif
+
+														@if($data->kemas->sekunder1!=NULL)
+														X {{ $data->kemas->sekunder1 }}{{ $data->kemas->s_sekunder1}}
+														@elseif($data->kemas->sekunder1==NULL)
+														@endif
+
+														@if($data->kemas->sekunder2!=NULL)
+														X {{ $data->kemas->sekunder2 }}{{ $data->kemas->s_sekunder2 }}
+														@elseif($data->kemas->sekunder2==NULL)
+														@endif
+
+                            @if($data->kemas->primer!=NULL)
+														X{{ $data->kemas->primer }}{{ $pkp->kemas->s_primer }}
+														@elseif($data->kemas->primer==NULL)
+														@endif
+                            )
+                            @elseif($data->kemas->primer==NULL)
+                              @if($data->kemas_eksis==NULL)
+                              @endif
+                            @endif
+              </td></tr>
+              <tr><td>Launch Deadline</td><td>: {{$data->launch}}{{$data->years}}{{$data->tgl_launch}}</td></tr>
+              <tr><td>Sample Deadline</td><td>: {{$data->jangka}}-  {{$data->waktu}}</td></tr>
+              <tr><td>PV</td><td> : {{$data->perevisi2->name}}</td></tr>
               @endforeach
               @endif
+							<tr><td>Status</td><td> : {{$data->status_data}}</td></tr>
+							<tr><td>Created</td><td> : {{$data->created_date}}</td></tr>
 						</thead>
 					</table><br>
 				</div>
@@ -155,6 +236,8 @@
 			@endforeach
     </div>
   </div>
+
+  
   @if(auth()->user()->role->namaRule =='user_produk')
   <div class="col-md-7 col-xs-12">
     <div class="x_panel" style="min-height:380px">
@@ -281,10 +364,11 @@
           <table class="table table-striped table-bordered">
             <thead>
               <tr style="font-weight: bold;color:white;background-color: #2a3f54;">
-                <th class="text-center" width="10%">Versi</th>
+                <th class="text-center" width="8%">Versi</th>
                 <th class="text-center">Sample</th>
-                <th class="text-center">Status</th>
-                <th class="text-center" width="25%">Action</th>
+                <th class="text-center" width="30%">Note</th>
+                <th class="text-center" width="10%">Status</th>
+                <th class="text-center" width="22%">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -299,6 +383,7 @@
               @endif
                 <td class="text-center">{{$for->versi}}.{{$for->turunan}}</td>
                 <td>{{$for->formula}}</td>
+                <td>{{$for->catatan_pv}}</td>
                 <td class="text-center">
                   @if($for->vv=='proses')
                   <span class="label label-primary" style="color:white">New Sample</span>
@@ -404,96 +489,32 @@
   @endif
 </div>
 
-<!-- modal -->
-<div class="modal" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">                 
-        <h3 class="modal-title" id="exampleModalLabel">Confirm Type PKP
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button> </h3>
-      </div>
-      <div class="modal-body">
-      <form class="form-horizontal form-label-left" method="POST" action="{{ route('edittype',$data->id_project) }}" novalidate>
-        <div class="form-group row">
-          <label class="control-label text-bold col-md-1 col-sm-3 col-xs-12 text-center">Type</label>
-          <div class="col-md-11 col-sm-9 col-xs-12">
-            <select name="type" class="form-control form-control-line" id="type">
-              @foreach($pkp1 as $pkp1)
-              <option disabled selected value="{{$pkp1->type}}">
-              @if($pkp1->type==1)
-              Maklon
-              @elseif($pkp1->type==2)
-              Internal
-              @elseif($pkp1->type==3)
-              Maklon/Internal
-              @endif</option>
-              @endforeach
-              <option value="1">Maklon</option>
-              <option value="2">Internal</option>
-              <option value="3">Maklon & Internal</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      @foreach($user as $user)
-      @if($user->role_id=='1' || $user->role_id=='5' || $user->role_id=='14')
-      <input type="hidden" value="{{$user->name}}" name="namatujuan[]" id="namatujuan">
-      <input type="hidden" value="{{$user->email}}" name="emailtujuan[]" id="emailtujuan">
-      @endif
-      @endforeach
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Submit</button>
-        {{ csrf_field() }}
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- modal selesai -->
 @endsection
 
 @section('s')
 <script>
-  const makeData = (ingredient) => {
-    return new Promise((resolve, reject) => {
-      if(ingredient){
-        resolve("data berhasil dibuat")
-      }else{
-        reject("data gagal dibuat");
-      }
-    });
-  }
-
-  makeData()
-  .then(console.log)
-  .catch(console.log)
-</script>
-<script>
   $(document).ready(function() {
-
 		$('#tabledata').on('click', 'tr a', function(e) {
       e.preventDefault();
       var lenRow = $('#tabledata tbody tr').length;
       if (lenRow == 1 || lenRow <= 1) {
-          alert("Tidak bisa hapus semua baris!!");
+        alert("Tidak bisa hapus semua baris!!");
       } else {
-          $(this).parents('tr').remove();
+        $(this).parents('tr').remove();
       }
     });
- 
-  var i = 1;
-  $("#add_data").click(function() {
-    $('#addrow' + i).html( "<td>"+
+
+    var i = 1;
+    $("#add_data").click(function() {
+      $('#addrow' + i).html( "<td>"+
 			"<input type='text' name='sample[]'class='form-control data' /></td>"+
       "<td><textarea rows='2' type='text' required name='note[]' placeholder='Note' class='form-control' ></textarea></td>"+
 			"<td><a href='' class='btn btn-danger btn-sm'><li class='fa fa-trash'></li></a>"+
 			"</td>");
 
-    $('#tabledata').append('<tr id="addrow' + (i + 1) + '"></tr>');
-    i++;
-  });
+      $('#tabledata').append('<tr id="addrow' + (i + 1) + '"></tr>');
+      i++;
+    });
   });
 </script>
 @endsection

@@ -144,6 +144,8 @@ class UpVersionController extends Controller
         $formulas->bj = $lastf->bj;
         $formulas->batch = $lastf->batch;
         $formulas->serving = $lastf->serving;
+        $formulas->satuan = $lastf->satuan;
+        $formulas->berat_jenis = $lastf->berat_jenis;
         $formulas->serving_size = $lastf->serving_size;
         $formulas->liter = $lastf->liter;
         $formulas->kfp_premix = $lastf->kfp_premix;
@@ -172,7 +174,7 @@ class UpVersionController extends Controller
                 $fortails->per_batch = $lastft->per_batch ;
                 $fortails->per_serving = $lastft->per_serving ;
                 $fortails->jenis_timbangan = $lastft->jenis_timbangan ;
-                $fortails->alternatif = $lastft->alternatif;
+                $fortails->alternatif1 = $lastft->alternatif1;
                 $fortails->alternatif2 = $lastft->alternatif2;
                 $fortails->alternatif3 = $lastft->alternatif3;
                 $fortails->alternatif4 = $lastft->alternatif4;
@@ -251,6 +253,8 @@ class UpVersionController extends Controller
         $formulas->bj = $lastf->bj;
         $formulas->batch = $lastf->batch;
         $formulas->serving = $lastf->serving;
+        $formulas->berat_jenis = $lastf->berat_jenis;
+        $formulas->satuan = $lastf->satuan;
         $formulas->serving_size = $lastf->serving_size;
         $formulas->liter = $lastf->liter;
         $formulas->kfp_premix = $lastf->kfp_premix;
@@ -279,7 +283,7 @@ class UpVersionController extends Controller
                 $fortails->per_batch = $lastft->per_batch ;
                 $fortails->per_serving = $lastft->per_serving ;
                 $fortails->jenis_timbangan = $lastft->jenis_timbangan ;
-                $fortails->alternatif = $lastft->alternatif;
+                $fortails->alternatif1 = $lastft->alternatif1;
                 $fortails->alternatif2 = $lastft->alternatif2;
                 $fortails->alternatif3 = $lastft->alternatif3;
                 $fortails->alternatif4 = $lastft->alternatif4;

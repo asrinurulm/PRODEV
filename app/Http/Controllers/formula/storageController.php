@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\devnf\storage;
 use App\devnf\panel;
 use App\devnf\hasilpanel;
-use App\devnf\hasilstorage;
 use App\dev\Formula;
 use auth;
 use redirect;
@@ -24,7 +23,6 @@ class storageController extends Controller
         $formula = Formula::where('id',$id)->first();;
         $fo=formula::where('id',$id)->first();;
         $panel =panel::all();
-        $proses=hasilstorage::where('id_formula',$id)->get();
         $idfor = $formula->workbook_id;
         $pn = hasilpanel::all();
         $idf = $formula->id;
@@ -38,7 +36,6 @@ class storageController extends Controller
             'pn' => $pn,
             'storage' => $storage,
             'panel' => $panel,
-            'proses' => $proses,
             'formula' => $formula,
             'cek_storage' =>$cek_storage
         ]);

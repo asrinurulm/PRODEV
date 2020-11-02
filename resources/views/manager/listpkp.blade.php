@@ -45,7 +45,6 @@
           
           @php $no = 0; @endphp
           @foreach($pkp as $pkp)
-          $out[strtotime($pkp)] = $pkp;
           @if($pkp->status_freeze=='inactive')
             @if($pkp->tujuankirim2=="1")
               @if($pkp->departement->dept==Auth::user()->departement->dept ||  $pkp->departement2->dept==Auth::user()->departement->dept)
@@ -172,7 +171,7 @@
                 <td class="text-center">
                   <a class="btn btn-info btn-sm" href="{{ Route('daftarpkp',$pkp->id_project) }}" data-toggle="tooltip" title="Show"><i class="fa fa-folder-open"></i></a>
                     @if(Auth::user()->departement->dept!='RKA')
-                    <button class="btn btn-primary btn-sm" data-toggle="tooltip" title="Project Finish" data-toggle="modal" data-target="#close{{$pkp->id_project}}"><i class="fa fa-power-off"></i></a></button>     
+                    <!-- <button class="btn btn-primary btn-sm" data-toggle="tooltip" title="Project Finish" data-toggle="modal" data-target="#close{{$pkp->id_project}}"><i class="fa fa-power-off"></i></a></button>      -->
                     @endif
                   </td>
                   <!-- modal -->

@@ -54,9 +54,35 @@
 
 			<div class="form-group row">
         <label class="control-label col-md-2 col-sm-2 col-xs-12">PV </label>
-				<div class="col-md-8 col-sm-8 col-xs-12">
+				<div class="col-md-2 col-sm-2 col-xs-12">
           <input class="form-control edit" id="pv" name="pv" minlength="2" type="text" value="{{ $formula->workbook->perevisi2->name }}" readonly />
       	</div>
+        <label class="control-label col-md-1 col-sm-1 col-xs-12">Kategori </label>
+        @if($formula->kategori=='fg')
+        <div class="col-md-2">
+          <input type="radio" name="kategori" checked oninput="finis_good()" id="id_finis" value="finish good"> Finished Good &nbsp
+          <input type="radio" name="kategori" oninput="wip()" id="id_wip"> WIP
+        </div>
+        <div class="col-md-3" id="ditampilkan">
+          <select name="kategori_formula" id="" disabled class="form-control">
+            <option disabled selected>--> Select One <--</option>
+            <option value="granulasi">Granulasi</option>
+            <option value="premix">Premix</option>
+          </select>
+        </div>
+        @elseif($formula->kategori!='fg')
+        <div class="col-md-2">
+          <input type="radio" name="kategori" oninput="finis_good()" id="id_finis" value="finish good"> Finished Good &nbsp
+          <input type="radio" name="kategori" checked oninput="wip()" id="id_wip"> WIP
+        </div>
+        <div class="col-md-3" id="ditampilkan">
+          <select name="kategori_formula" id="" disabled class="form-control">
+            <option readonly selected>{{$formula->kategori}}</option>
+            <option value="granulasi">Granulasi</option>
+            <option value="premix">Premix</option>
+          </select>
+        </div>
+        @endif
       </div>
 
       <div class="form-group row">
@@ -88,21 +114,21 @@
           <input class="form-control edit" id="serving" name="serving" type="number" step=any value="{{ $formula->serving_size }}" required />
       	</div>
         <div class="col-md-2 col-sm-2 col-xs-12" >
-          @if($formula->satuan=='gram')
-          <center><input type="radio" name="satuan" oninput="satuan_gram()" checked id="id_gram" value="gram"> Gram
+          @if($formula->satuan=='Gram')
+          <center><input type="radio" name="satuan" oninput="satuan_gram()" checked id="id_gram" value="Gram"> Gram
           <input type="radio" name="satuan" oninput="satuan_ml()" id="id_ml" value="Ml"> Ml
-          @else
+          @elseif($formula->satuan=='Ml')
           <center><input type="radio" name="satuan" oninput="satuan_gram()" id="id_gram" value="gram"> Gram
           <input type="radio" name="satuan" checked oninput="satuan_ml()" id="id_ml" value="Ml"> Ml
           @endif
       	</div>
       	<label for="middle-name" class="control-label col-md-1 col-sm-1 col-xs-12"> Berat Jenis </label>
         <div class="col-md-2 col-sm-2 col-xs-12" id="tampilkan">
-          <input class="form-control" placeholder='Berat Jenis' id="" value="{{$formula->berat_jenis}}" name="berat_jenis" type="number" required/>
+          <input class="form-control" placeholder='Berat Jenis' id="" value="{{$formula->berat_jenis}}" readonly name="berat_jenis" type="number" />
       	</div>
         @if($formula->satuan=='Ml')
         <div class="col-md-1 col-sm-1 col-xs-12">
-        <input class="form-control" placeholder='{{$formula->serving_size / $formula->berat_jenis}} ML' id="" disabled name="" type="number" required/>
+        <input class="form-control" placeholder='{{$formula->serving_size / $formula->berat_jenis}} ML' id="" readonly name="" type="number"/>
         </div>
         @endif
       </div>
@@ -130,7 +156,7 @@
 			<div class="col-md-6 col-md-offset-5">
         <a class="btn btn-danger btn-sm" href="{{ route('showworkbook',$formula->workbook_id) }}"><i class="fa fa-ban"></i> Cencel</a>
 				<button type="reset" class="btn btn-warning btn-sm"><li class="fa fa-repeat"></li> Reset</button>
-				<button type="submit" class="btn btn-primary btn-sm"><li class="fa fa-check"></li> Submit</button>
+				<button type="submit" class="btn btn-primary btn-sm"><li class="fa fa-check"></li> Edit And Next</button>
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         {{ method_field('PATCH') }}
         @include('formerrors')
@@ -169,6 +195,38 @@
         "<div class='col-md-12 col-sm-12 col-xs-12'>"+
         "  <input class='form-control' disabled placeholder='Berat Jenis' id='' name='' type='number' required/>"+
       	"</div>"
+    }
+  }
+
+  function finis_good(){
+    var finis_good = document.getElementById('id_finis')
+
+    if(finis_good.checked != true){
+      document.getElementById('ditampilkan').innerHTML = "";
+    }else{
+
+      document.getElementById('ditampilkan').innerHTML =
+        "<select name='' disabled id='' class='form-control'>"+
+        "  <option disabled selected>--> Select One <--</option>"+
+        "  <option value='granulasi'>Granulasi</option>"+
+        "  <option value='premix'>Premix</option>"+
+        "</select>"
+    }
+  }
+
+  function wip(){
+    var wip = document.getElementById('id_wip')
+
+    if(wip.checked != true){
+      document.getElementById('ditampilkan').innerHTML = "";
+    }else{
+
+      document.getElementById('ditampilkan').innerHTML =
+        "<select name='kategori_formula' id='' class='form-control' required>"+
+        "  <option disabled selected>--> Select One <--</option>"+
+        "  <option value='granulasi'>Granulasi</option>"+
+        "  <option value='premix'>Premix</option>"+
+        "</select>"
     }
   }
 </script>

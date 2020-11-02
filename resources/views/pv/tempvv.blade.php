@@ -234,7 +234,6 @@
                       <li><a href="{{ route('satuan.index') }}">Satuan</a></li>
                       <li><a href="{{ route('gudang.index') }}">Gudang</a></li>
                       <li><a href="{{ route('maklon.index') }}">Maklon</a></li>
-                      <li><a href="{{ route('produksi.index') }}">Produksi</a></li>
                       <li><a href="{{ route('kategori.index') }}">Kategori</a></li>
                       <li><a href="{{ route('subkategori.index') }}">Sub Kategori</a></li>
                       <li><a href="{{ route('kelompok.index') }}">Kelompok</a></li>

@@ -71,6 +71,7 @@
       <div class="form-panel">
 
         <!-- table pilih mesin -->
+        <!-- <p><label><input type="checkbox" id="checkAllpkp1"/> Check all</label></p> -->
         <form id="demo-form2" data-parsley-validate class="form" action="/mss" method="post">
         <table id="ex" class="Table table-striped table-bordered nowrap">
           <thead>
@@ -94,7 +95,7 @@
               <input type="hidden" name="sdm" id="sdm{{$no}}" maxlength="45" value="10" class="form-control col-md-7 col-xs-12">
               <input type="hidden" name="std" id="std{{$no}}" maxlength="45" value="{{ $mesin->standar_sdm }}" class="form-control col-md-7 col-xs-12">
               <input type="hidden" name="rate" id="rate{{$no}}" maxlength="45" value="{{ $mesin->rate_mesin }}" class="form-control col-md-7 col-xs-12">
-              <td width="5%"><input type="checkbox" id="pmesin" name="pmesin[]" value="{{ $mesin->id_data_mesin }}"></td>
+              <td width="5%"><input type="checkbox" id="pmesin" class="data1" name="pmesin[]" value="{{ $mesin->id_data_mesin }}"></td>
               <td>{{ $mesin->workcenter }}</td>
               <td>{{ $mesin->IO }}</td>
               <td>{{ $mesin->nama_mesin }} <input type="hidden" name="jlh_line" id="line{{$no}}" maxlength="45" value="{{ $mesin->jlh_line }}" class="form-control col-md-7 col-xs-12">
@@ -202,6 +203,15 @@ var hasil3 = (hasil2/60);
 var hasil4 = (hasil3 * rate);
 console.log(hasil4);
 document.getElementById('jumlah{{$no}}').value = hasil4;
+
+// PKP
+$("#checkAllpkp").change(function () {
+    $(".data").prop('checked', $(this).prop("checked"));
+  });
+
+  $("#checkAllpkp1").change(function () {
+    $(".data1").prop('checked', $(this).prop("checked"));
+  });
 </script>
 
 @endsection

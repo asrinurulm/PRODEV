@@ -206,10 +206,10 @@
                 @endforeach
               </tbody>
             </table>
-            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5 col-sm-offset-5"><br>
+            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4 col-sm-offset-4"><br>
               <a href="{{ route('showworkbook',$formula->workbook_id) }}" class="btn btn-danger btn-sm" type="submit"><li class="fa fa-arrow-left"></li> Back To Home</a>
               @if($formula->status_storage=='proses')
-              <a href="{{ route('ajukanstorage',$formula->id) }}" class="btn btn-primary btn-sm" type="submit"><li class="fa fa-paper-plane"></li> Sent Panel To PV</a>
+              <a href="{{ route('ajukanstorage',$formula->id) }}" class="btn btn-primary btn-sm" type="submit"><li class="fa fa-paper-plane"></li> Sent Storage To PV</a>
               @endif
             </div>
             @endif

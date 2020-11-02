@@ -25,10 +25,6 @@ class pkp_project extends Model
         return $this->hasOne('App\User','id','userpenerima');
     }
 
-    public function launch(){
-        return $this->hasOne('App\pkp\project_launching','id_pkp','id_project');
-    }
-
     public function author1(){
         return $this->hasOne('App\User','id','author');
     }

@@ -12,6 +12,7 @@
         <thead>
           <tr style="font-weight: bold;color:white;background-color: #2a3f54;">
             <th>Nama Produk</th>
+            <th class="text-center">Formula</th>
             <th class="text-center">Versi</th>
             <th class="text-center">Status PV</th>
             <th class="text-center">Action</th>
@@ -21,11 +22,12 @@
         @foreach ($formulas as $formula)
           <tr style="background-color:white">
             <td>{{ $formula->workbook->datapkpp->project_name}}</td>
+            <td class="text-center">{{ $formula->formula}}</td>
             <td class="text-center">{{ $formula->versi}}.{{ $formula->turunan }}</td>
             <td class="text-center">{{ $formula->vv}}</td>
             <td class="text-center">
               {{csrf_field()}}
-              <a class="btn btn-warning btn-sm" href="{{ route('insertTemplate',['ftujuan'=>$for,'fasal'=>$formula->id]) }}"><i class="fa fa-download"></i> Jadikan Template</a>
+              <a class="btn btn-warning btn-sm" href="{{ route('insertTemplate',['ftujuan'=>$for,'fasal'=>$formula->id]) }}" onclick="return confirm('Jadikan Template ?')"><i class="fa fa-download"></i> Jadikan Template</a>
             </td>
           </tr>
         @endforeach

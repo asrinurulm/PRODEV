@@ -336,6 +336,13 @@
               </table>
             </div>
           </div>
+          <input type="hiden" value="{{ Auth::user()->email }}" name="pengirim1" id="pengirim1">
+          @foreach($user as $user)
+            @if($user->role_id=='14')
+            <input type="hiden" value="{{$user->name}}" name="namatujuan[]" id="namatujuan">
+            <input type="hiden" value="{{$user->email}}" name="emailtujuan[]" id="emailtujuan">
+            @endif
+          @endforeach
           <div class="col-md-6 col-md-offset-5 col-sm-offset-3">
             <button type="reset" class="btn btn-danger btn-sm">Reset</button>
             <button type="submit" class="btn btn-primary btn-sm">Submit And Next</button>

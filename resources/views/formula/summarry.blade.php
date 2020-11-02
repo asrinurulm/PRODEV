@@ -60,7 +60,7 @@
           </tr>
         </table>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <table>
           <tr>
             <td>Jenis Formula</td><td>&nbsp; : 
@@ -131,8 +131,8 @@
           </tr>
         </table>
       </div>
-      <div class="col-md-1">
-        <a class="btn btn-success btn-sm" href="{{ route('showworkbook',$formula->workbook_id) }}"><i class="fa fa-check"></i> Done</a>
+      <div class="col-md-2">
+        <a class="btn btn-danger btn-sm" href="{{ route('showworkbook',$formula->workbook_id) }}"><i class="fa fa-ban"></i> Bact To Workbook</a>
       </div>
     </div>
 
@@ -153,11 +153,6 @@
 							<div class="panel-default">	
 								<div class="panel-body badan">
 									<label>PT NUTRIFOOD INDONESIA</label>
-									<table ALIGN="right">
-										<tr>
-											<th class="text-right">KODE FORM : F.R.15003</th>
-										</tr>
-									</table>
 									<center> <h2 style="font-size: 22px;font-weight: bold;">FORMULA PRODUK</h2> </center>
 									<center> <h2 style="font-size: 20px;font-weight: bold;">( FOR )</h2> </center>
 				
@@ -198,7 +193,7 @@
 													<table class="table-bordered table">
 														<tbody>
 															<tr><td><b>{{ $fortail['nama_sederhana'] }}</td></tr>
-															@if($fortail['alternatif'] != Null)<tr><td>{{ $fortail['alternatif'] }}</td></tr>@endif
+															@if($fortail['alternatif1'] != Null)<tr><td>{{ $fortail['alternatif1'] }}</td></tr>@endif
 															@if($fortail['alternatif2'] != Null)<tr><td>{{ $fortail['alternatif2'] }}</td></tr>@endif
 															@if($fortail['alternatif3'] != Null)<tr><td>{{ $fortail['alternatif3'] }}</td></tr>@endif
 															@if($fortail['alternatif4'] != Null)<tr><td>{{ $fortail['alternatif4'] }}</td></tr>@endif
@@ -257,7 +252,7 @@
 													<table class="table-bordered table">
 														<tbody>
 															<tr><td><b>{{ $fortail['nama_sederhana'] }}</td></tr>
-															@if($fortail['alternatif'] != Null)<tr><td>{{ $fortail['alternatif'] }}</td></tr>@endif
+															@if($fortail['alternatif1'] != Null)<tr><td>{{ $fortail['alternatif1'] }}</td></tr>@endif
 															@if($fortail['alternatif2'] != Null)<tr><td>{{ $fortail['alternatif2'] }}</td></tr>@endif
 															@if($fortail['alternatif3'] != Null)<tr><td>{{ $fortail['alternatif3'] }}</td></tr>@endif
 															@if($fortail['alternatif4'] != Null)<tr><td>{{ $fortail['alternatif4'] }}</td></tr>@endif
@@ -319,34 +314,7 @@
 												<tr><td><b> May Contain </b></td><td>:</td><td></td></tr>
 											</table>
 										</div>
-										<div class="col-md-6">
-											<table ALIGN="right" class="table-bordered">
-												<thead>
-													<tr>
-														<th class="text-center" colspan="2">Dibuat Oleh :</th>
-														<th class="text-center">Mengetahui  *): </th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr class="text-center">
-														<td class="text-center"><br><br><br><br><br></td>
-														<td class="text-center"><br><br><br><br><br></td>
-													</tr>
-													<tr>
-														<td class="text-center" width="35%">RD Sourcing</td>
-														<td class="text-center" width="45%">RD Sourcing Asso Mgr</td>
-														<td class="text-center">RPE Manager</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
 									</div>
-		
-									<table ALIGN="right">
-										<tr><td>Revisi/Berlaku : {{ $formula->created_at }} </td></tr>
-										<tr><td>Masa Berlaku : Selamanya</td></tr>
-									</table>
-									<table><tr>*) Ditandatangani jika perubahan formula berasal/ diajukan oleh RD sourcing</tr></table>
 								</div>
 							</div>
 							@endif
@@ -378,7 +346,7 @@
 																		<th colspan="39" class="text-center" style="font-size: 12px;font-weight: bold; color:black;background-color: #898686;">Nutrition Data</th>
 																	</tr>
 																	<tr>
-																		<th class="text-center" style="font-weight: bold;color:white;background-color: #2a3f54;">All Carry Over</th>
+																		<th class="text-center" style="font-weight: bold;color:white;background-color: #2a3f54;">Carry Over</th>
 																		<th class="text-center" style="font-weight: bold;color:white;background-color: #2a3f54;">Carry Over dicantumkan dalam penulisan ing list</th>
 																		<th class="text-center" style="font-weight: bold;color:white;background-color: #3a5e82;">Lemak</th>
 																		<th class="text-center" style="font-weight: bold;color:white;background-color: #3a5e82;">SFA</th>
@@ -423,8 +391,8 @@
 																	@foreach ($detail_harga->sortByDesc('per_batch') as $fortail)
 																	<tr>
 																		<td>{{ $fortail['nama_sederhana'] }}</td>
-																		<td>-</td>
-																		<td>-</td>
+																		<td>{{ $fortail['btp'] }}</td>
+																		<td>{{ $fortail['list'] }}</td>
 																		<td>{{ $fortail['per_serving'] }}</td>
 																		<td>{{ $fortail['persen'] }}</td>
 																		<td>{{ $fortail['lemak'] }}</td>

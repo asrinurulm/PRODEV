@@ -56,7 +56,7 @@
               <td>{{ $bahan->cek_halal }}</td>
               <td>{{ $bahan->berat }} {{ $bahan->satuan->satuan }}</td>
               <td>{{ $bahan->harga_satuan }}</td>
-              <td>{{ $bahan->curren->currency }}</td>
+              <td></td>
               <td>
                 <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit_bahan{{$bahan->id}}" data-toggle="tooltip"  title="Edit"><i class="fa fa-edit"></i></a>
                 {{-- <a class="btn btn-danger" onclick="return confirm('Hapus Bahan Baku ?')" href="{{ route('delbahan',$bahan->id) }}"><i class="fa fa-trash-o"></i></a> --}}

@@ -410,6 +410,7 @@ Route::post('insertbahan/{id}','formula\Step2Controller@insert')->name('step2ins
 Route::post('updatebahan/{id}','formula\Step2Controller@update')->name('step2update');
 Route::get('bahan/{id}/{vf}/delete','formula\Step2Controller@destroy')->name('step2destroy');
 Route::patch('updatenote/{wb}/{id}','formula\Step2Controller@update')->name('updatenote');
+Route::get('hapusall/{formula}','formula\Step2Controller@hapusall')->name('hapusall');
 Route::get('getAlternatif/{id}','ajax\getGet@getAlternatif');
 
 Route::get('penyusunan.formula/{registrasi}/{wb}','formula\penyusunanformulaController@penyusunan')->name('penyusunan.formula');

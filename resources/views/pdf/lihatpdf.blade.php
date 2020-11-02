@@ -44,9 +44,9 @@
                           <div class="col-md-4 col-sm-9 col-xs-12">
                             <select name="kirim" class="form-control form-control-line" id="kirim">
                               @foreach($dept as $dept)
-                              @if($dept->dept=='REA')
+                              @if($dept->dept=='RPE')
                               <option value="{{$dept->id}}">{{ $dept->dept }} ({{ $dept->nama_dept }})</option>
-                              <option disabled selected>Departement</option>
+                              <option value="0"></option>
                               @endif
                               @endforeach
                             </select>

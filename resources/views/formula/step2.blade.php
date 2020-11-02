@@ -78,38 +78,38 @@
         <div class="col-md-4">
           <table>
             <tr>
-              <td>Nama Produk</td><td>&nbsp; : {{ $formula->Workbook->datapkpp->project_name }}</td>                    
+              <th>Nama Produk</th><td>&nbsp; : {{ $formula->Workbook->datapkpp->project_name }}</td>                    
             </tr>
             <tr>
-              <td>Versi</td><td>&nbsp; : {{ $formula->versi }}.{{ $formula->turunan }}</td>
+              <th>Versi</th><td>&nbsp; : {{ $formula->versi }}.{{ $formula->turunan }}</td>
             </tr>
             <tr>
-              <td>PV</td><td>&nbsp; : {{ $formula->workbook->perevisi2->name }} </td>
+              <th>PV</th><td>&nbsp; : {{ $formula->workbook->perevisi2->name }} </td>
             </tr>
           </table>
         </div>
         <div class="col-md-4">
           <table>
             <tr>
-              <td>Target Serving</td><td>&nbsp; : 
+              <th>Target Serving</th><td>&nbsp; : 
               @if($formula->satuan=='Ml')
               {{ $formula->serving_size }} ({{$formula->serving_size / $formula->berat_jenis}} {{ $formula->satuan }})
               @else
-              {{ $formula->serving_size }}{{$formula->satuan}}
+              {{ $formula->serving_size }} {{$formula->satuan}}
               @endif</td>
             </tr>
             <tr>
-              <td>Jumlah Batch</td><td>&nbsp; : {{ $formula->batch }} Gram</td>
+              <th>Jumlah Batch</th><td>&nbsp; : {{ $formula->batch }} Gram</td>
             </tr>
             <tr>                    
-              <td>Jumlah Serving</td><td>&nbsp; : {{ $formula->serving }} Gram</td>
+              <th>Jumlah Serving</th><td>&nbsp; : {{ $formula->serving }} Gram</td>
             </tr>
           </table>
         </div>
         <div class="col-md-4">
           <table>
             <tr>
-              <td>Status PV</td><td>&nbsp; :
+              <th>Status PV</th><td>&nbsp; :
                 @if ($formula->vv == 'proses')
                 <span class="label label-warning">Proses</span>                        
                 @endif
@@ -125,7 +125,7 @@
               </td>                    
             </tr>
             <tr>
-              <td>Status Feasibility</td><td>&nbsp; :
+              <th>Status Feasibility</th><td>&nbsp; :
                 @if ($formula->status_fisibility == 'proses')
                 <span class="label label-warning">Proses</span>                        
                 @endif
@@ -141,9 +141,9 @@
               </td>                    
             </tr>
             <tr>
-              <td>Status Nutfact</td><td>&nbsp; :  
+              <th>Status Nutfact</th><td>&nbsp; :  
                 @if ($formula->status_nutfact == 'proses')
-                                              <span class="label label-warning">Proses</span>                        
+                  <span class="label label-warning">Proses</span>                        
                 @endif
                 @if ($formula->status_nutfact == 'not_approved')
                   <span class="label label-danger">Rejected</span>                        
@@ -176,6 +176,11 @@
             <table style="border-spacing: 10px;border-collapse: separate;">
             	<tr>
                 <td>
+                  @if($formula->kategori=='granulasi')
+                  <input type="hidden" name="cgranulasi" value="ya">
+                  @elseif($formula->kategori=='premix')
+                  <input type="hidden" name="cpremix" value="ya">
+                  @endif
 									<label for="" class="control-label">Bahan Baku</label><br>
 									<select class="bahan form-control" style="width:190px;" id="prioritas" name="prioritas">
 										<option value="" disabled selected>Pilih BahanBaku</option>
@@ -254,27 +259,27 @@
           </div>
           <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="row">
-              @if ($mybase == 0)
-              <div class="col-md-1"> 
-                <label for="" class="control-label">Per Batch</label>
-                <input type="number" step=any id="per_batch" name="per_batch" placeholder="0" class="form-control" value="{{ old('per_batch') }}" />                    
-              </div>
-              @endif
-              <div class="col-md-1">
-                <label for="" class="control-label">Per Serving</label>
+              <div class="col-md-2">
+                <label for="" class="control-label">Per Serving(Gram)</label>
                 <input type="number" step=any id="per_serving"  name="per_serving" placeholder="0" class="form-control" value="{{ old('per_serving') }}" required />
                 <input type="hidden" id="c"  name="c" value="0"/> 
               </div>
+              @if ($mybase == 0)
+              <div class="col-md-2"> 
+                <label for="" class="control-label">Per Batch(Gram)</label>
+                <input type="number" step=any id="per_batch" name="per_batch" placeholder="0" class="form-control" value="{{ old('per_batch') }}" />                    
+              </div>
+              @endif
               @if ($mybase == 0)
               <div class="col-md-2"><br>
                 <input type="checkbox" value="yes" name="cbase" id="cbase">
                 <label for="cbase" >Jadikan Base Perhitungan</label>                                        
               </div>                                                                 
               @endif  
-              <div class="col-md-1"><br>
-                <input type="checkbox" value="yes" name="cgranulasi" id="cgranulasi">
-                <label for="cgranulasi" >Granulasi</label>
-              </div>                                
+              <!-- <div class="col-md-2"><br>
+                <input type="radio" value="yes" name="cgranulasi" id="cgranulasi"><label for="cgranulasi" >Granulasi</label> &nbsp &nbsp
+                <input type="radio" value="yes" name="cpremix" id="cpremix"><label for="cpremix" >Premix</label>
+              </div>                              -->
               <div class="col-md-6"><br>
               	{{ csrf_field()}}
               	<input type="submit" class="btn btn-primary btn-sm" value="+ Masukan Bahan"></td>
@@ -310,7 +315,7 @@
                 @endif
                 @if ($mybase != 0)
                 <a type="button" class="btn btn-dark btn-sm" id="buttongantibase"><i class="fa fa-exchange"></i> Ganti Base</a>
-                <a type="button" class="btn btn-danger btn-sm" href="{{ route('hapusbase',$idf) }}" onclick="return confirm('Hapus Base Perhitungan ?')"><i class="fa fa-times"></i> Hapus Base</a>
+                <a type="button" class="btn btn-danger btn-sm" href="{{ route('hapusall',$idf) }}" onclick="return confirm('Hapus Data ?')"><i class="fa fa-times"></i> Delete Data</a>
                 @endif
               </div>                                    
             </div>
@@ -337,11 +342,11 @@
             <thead>
               <tr style="font-weight: bold;color:white;background-color: #2a3f54;">
                 <th style="width:5%" class="text-center">#</th>                        
-                <th style="width:25%">Nama Sederhana</th>       
-                <th style="width:10%">PerBatch</th>
-                <th style="width:10%"><i class="fa fa-edit"></i>PerServing</th>
-                <th style="width:10%;"><i class="fa fa-plus"></i>ScaleBatch</th>
+                <th style="width:25%">Nama Sederhana</th>      
+                <th style="width:10%"><i class="fa fa-edit"></i>PerServing (gram)</th> 
+                <th style="width:10%">PerBatch  (gram)</th>
                 <th style="width:10%;"><i class="fa fa-plus"></i>ScaleServing</th>
+                <th style="width:10%;"><i class="fa fa-plus"></i>ScaleBatch</th>
                 <th style="width:8%;">BasePerhitungan</th>
               </tr>
             </thead>
@@ -362,7 +367,7 @@
                   <table class="table-bordered table">
                     <tbody>
                       <tr><td><b>{{ $fortail['nama_sederhana'] }}</td></tr>
-                      @if($fortail['alternatif'] != Null)<tr><td>{{ $fortail['alternatif'] }}</td></tr>@endif
+                      @if($fortail['alternatif1'] != Null)<tr><td>{{ $fortail['alternatif1'] }}</td></tr>@endif
                       @if($fortail['alternatif2'] != Null)<tr><td>{{ $fortail['alternatif2'] }}</td></tr>@endif
                       @if($fortail['alternatif3'] != Null)<tr><td>{{ $fortail['alternatif3'] }}</td></tr>@endif
                       @if($fortail['alternatif4'] != Null)<tr><td>{{ $fortail['alternatif4'] }}</td></tr>@endif
@@ -377,16 +382,16 @@
                 {{-- Granulasi --}}
                 <input type="hidden" id="granulasi{{$no}}" value="{{ $fortail['granulasi'] }}">
                 {{-- For Reset and Check what change --}}
-                <input type="hidden" placeholder="0" id="rBatch{{$no}}"     value="{{ $fortail['per_batch'] }}">
                 <input type="hidden" placeholder="0" id="rServing{{$no}}"   value="{{ $fortail['per_serving'] }}">
-                <input type="hidden" placeholder="0" id="rsBatch{{$no}}"    value="{{ $fortail['scale_batch'] }}">
+                <input type="hidden" placeholder="0" id="rBatch{{$no}}"     value="{{ $fortail['per_batch'] }}">
                 <input type="hidden" placeholder="0" id="rsServing{{$no}}"  value="{{ $fortail['scale_serving'] }}">
+                <input type="hidden" placeholder="0" id="rsBatch{{$no}}"    value="{{ $fortail['scale_batch'] }}">
 
                   {{-- Akhir --}}
-                <td><input type="number" placeholder="0" onkeyup="jBatch(this.id)"    id="Batch{{$no}}"    value="{{ $fortail['per_batch'] }}"     name="Batch[{{ $no }}]"></td>
                 <td><input type="number" placeholder="0" onkeyup="jServing(this.id)"  id="Serving{{$no}}"  value="{{ $fortail['per_serving'] }}"   name="Serving[{{ $no }}]"></td>
-                <td style="background-color:#ffffb3" ><input type="number" placeholder="0" onkeyup="jsBatch(this.id)"   id="sBatch{{$no}}"   value="{{ $fortail['scale_batch'] }}"   name="sBatch[{{$no}}]"></td>
+                <td><input type="number" placeholder="0" onkeyup="jBatch(this.id)"    id="Batch{{$no}}"    value="{{ $fortail['per_batch'] }}"     name="Batch[{{ $no }}]"></td>
                 <td style="background-color:#ffffb3" ><input type="number" placeholder="0" onkeyup="jsServing(this.id)" id="sServing{{$no}}" value="{{ $fortail['scale_serving'] }}" name="sServing[{{$no}}]"></td>
+                <td style="background-color:#ffffb3" ><input type="number" placeholder="0" onkeyup="jsBatch(this.id)"   id="sBatch{{$no}}"   value="{{ $fortail['scale_batch'] }}"   name="sBatch[{{$no}}]"></td>
                 @if ($c_mybase == 1)
                 <td class="base" style="background-color:#f2f2f2">
                   <input type="hidden" id="rBase" id="rBase" value="{{ $mybase }}">
@@ -403,7 +408,7 @@
               @php $rowspan = $ada + 1; @endphp
 
               <tr style="background-color:#eaeaea;color:red">
-                <td colspan="6">Granulasi &nbsp;
+                <td colspan="7">Granulasi &nbsp;
                   % <input type="number" id="gp" placeholder="0" disabled>  
                 </td>                                            
               </tr>            
@@ -411,8 +416,8 @@
               @if($fortail['granulasi'] == 'ya')                                                                       
               <tr>
                 @php $no = $fortail['no']; @endphp                      
-                <td>
-                  <a type="button" href="{{ route('editfortail',$fortail['id']) }}"><i class="fa fa-edit" ></i></a>
+                <td class="text-center">
+                  <a type="button" href="{{ route('editfortail',$fortail['id']) }}" title="edit"><i class="fa fa-edit" ></i></a>
                   <a type="button" onclick="return confirm('Hapus Bahan Baku ?')" href="{{ route('step2destroy',['id'=>$fortail['id'],'vf'=>$idf]) }}"><i class="fa fa-trash"></i></a>
                 </td>
                 <td>
@@ -434,16 +439,16 @@
                 {{-- Granulasi --}}
                 <input type="hidden" id="granulasi{{$no}}" value="{{ $fortail['granulasi'] }}">
                 {{-- For Reset and Check what change --}}
-                <input type="hidden" placeholder="0" id="rBatch{{$no}}" value="{{ $fortail['per_batch'] }}">
                 <input type="hidden" placeholder="0" id="rServing{{$no}}" value="{{ $fortail['per_serving'] }}">
-                <input type="hidden" placeholder="0" id="rsBatch{{$no}}" value="{{ $fortail['scale_batch'] }}">
+                <input type="hidden" placeholder="0" id="rBatch{{$no}}" value="{{ $fortail['per_batch'] }}">
                 <input type="hidden" placeholder="0" id="rsServing{{$no}}" value="{{ $fortail['scale_serving'] }}">
+                <input type="hidden" placeholder="0" id="rsBatch{{$no}}" value="{{ $fortail['scale_batch'] }}">
 
                 {{-- Akhir --}}
-                <td><input type="number" placeholder="0" onkeyup="jBatch(this.id)"    id="Batch{{$no}}"    value="{{ $fortail['per_batch'] }}"     name="Batch[{{ $no }}]"></td>
                 <td><input type="number" placeholder="0" onkeyup="jServing(this.id)"  id="Serving{{$no}}"  value="{{ $fortail['per_serving'] }}"   name="Serving[{{ $no }}]"></td>
-                <td style="background-color:#ffffb3"><input type="number" placeholder="0" onkeyup="jsBatch(this.id)"   id="sBatch{{$no}}"   value="{{ $fortail['scale_batch'] }}"   name="sBatch[{{$no}}]"></td>
+                <td><input type="number" placeholder="0" onkeyup="jBatch(this.id)"    id="Batch{{$no}}"    value="{{ $fortail['per_batch'] }}"     name="Batch[{{ $no }}]"></td>
                 <td style="background-color:#ffffb3"><input type="number" placeholder="0" onkeyup="jsServing(this.id)" id="sServing{{$no}}" value="{{ $fortail['scale_serving'] }}" name="sServing[{{$no}}]"></td>                                        
+                <td style="background-color:#ffffb3"><input type="number" placeholder="0" onkeyup="jsBatch(this.id)"   id="sBatch{{$no}}"   value="{{ $fortail['scale_batch'] }}"   name="sBatch[{{$no}}]"></td>
                 @if ($c_mybase == 1)
                 <td class="base" style="background-color:#f2f2f2">
                   <input type="hidden" id="rBase" id="rBase" value="{{ $mybase }}">
@@ -456,21 +461,23 @@
               @endforeach 
               @endif
 
+              
+
               <tr class="tototal">
                 {{-- For Reset Jumlah --}}
-                <input type="hidden" id="rjsBatch" value="">
                 <input type="hidden" id="rjsServing" value="">
                 <td colspan="2">Jumlah</td>
-                <td><input type="number" placeholder="0" id="jBatch" disabled></td>
+                <input type="hidden" id="rjsBatch" value="">
                 <td><input type="number" placeholder="0" id="jServing" disabled></td>
-                <td><input onkeyup="cjsBatch(this.id)" type="number" placeholder="0" id="jsBatch" name="jsBatch"></td>
-                <td colspan="2"><input onkeyup="cjsServing(this.id)" type="number" placeholder="0" id="jsServing" name="jsServing"></td>
+                <td><input type="number" placeholder="0" id="jBatch" disabled></td>
+                <td ><input onkeyup="cjsServing(this.id)" type="number" placeholder="0" id="jsServing" name="jsServing"></td>
+                <td ><input onkeyup="cjsBatch(this.id)" type="number" placeholder="0" id="jsBatch" name="jsBatch"></td>
               </tr>
 
               <tr class="toserving">
-                <td colspan="3">Target Serving</td>
-                <td style="background-color:#f2f2f2;color:black;"><input type="number" placeholder="0" id="tServing" value="{{ $target_serving }}" disabled></td>
-                <td colspan="3"></td>
+                <td colspan="2">Target Serving</td>
+                <td style="background-color:#f2f2f2;color:black;"><input type="number" id="tServing" value="{{ $target_serving }}" disabled></td>
+                <td colspan="4"></td>
               </tr>
 
             </tbody>                            
@@ -480,12 +487,12 @@
           @endif 
           <div class="row">
             <div class="col-md-8">
-              @if($ada<=1)                                    
+              @if($ada==0)                                    
               <a type="button" class="btn btn-warning btn-sm" href="{{ route('getTemplate',[$idfor,$idf]) }}"><i class="fa fa-download"></i> Import Template Formula</a>        
               @else
               <a class="btn btn-primary btn-sm" type="button" id="buttonformsavechanges"><i class="fa fa-save"></i> Simpan Perubahan Serving</a>                            
               @endif                                                      
-              <a class="btn btn-danger btn-sm" href="{{ route('showworkbook',$formula->workbook_id) }}"><i class="fa fa-share"></i>Kembali</a>
+              <a class="btn btn-danger btn-sm" href="{{ route('showworkbook',$formula->workbook_id) }}"><i class="fa fa-ban"></i> Cencel</a>
             </div>
             <div class="col-md-4">
               <div>
@@ -510,7 +517,7 @@
         <form class="form-horizontal form-label-left" method="POST" action="{{ route('updatenote',[$formula->id,$formula->workbook_id]) }}">
         <div class="row">
           <div class="form-group">
-            <label class="control-label col-md-1 col-sm-1 col-xs-12" style="color:#258039">Note </label>
+            <label class="control-label col-md-1 col-sm-1 col-xs-12">Note </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <textarea name="keterangan" id="keterangan" value="{{ $formula->catatan_rd }}" class="col-md-12 col-sm-12 col-xs-12" rows="2">{{ $formula->catatan_rd }}</textarea>
             </div>
@@ -632,6 +639,7 @@
     var tsb = 0;
     var tss = 0;
     var total_granulasi = 0;
+    var total_premix = 0;
 
   	for(y=1;y<=i;y++){
       batch = parseFloat($('#Batch'+y).val());
@@ -641,6 +649,7 @@
       csBatch = $('#sBatch'+y).val();                    
       csServing = $('#sServing'+y).val();
       cgranulasi = $('#granulasi'+y).val();
+      cpremix = $('#premix'+y).val();
 
       if(csBatch == ''){
         sBatch = 0;
@@ -654,6 +663,9 @@
       tsb     = tsb + sBatch;
       tss     = tss + sServing;                                           
 
+      if(cpremix == 'ya'){
+        total_premix = total_premix + serving;
+      } 
       if(cgranulasi == 'ya'){
         total_granulasi = total_granulasi + serving;
       }  
@@ -678,7 +690,10 @@
     var one_persen  = total2/100;
     total_persen    = total_granulasi / one_persen;
     total_persen    = parseFloat(total_persen.toFixed(2));
+    total_persen_premix    = total_premix / one_persen;
+    total_persen_premix    = parseFloat(total_persen_premix.toFixed(2)); 
     $('#gp').val(total_persen);                      
+    $('#pr').val(total_persen_premix);    
   });
 
   // ONCHANGE SCALE OPTION

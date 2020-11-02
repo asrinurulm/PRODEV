@@ -340,29 +340,6 @@
                             </div>
                           </div>
                       </div>
-                      @if($pkp->tujuankirim2!=NULL)
-                        @if ($pkp->userpenerima2!=Null && $pkp->userpenerima!=Null)
-                        <input type="text" name="penerima1" id="penerima1" value="{{$pkp->departement->users->email}}">
-                        <input type="text" name="penerima2" id="penerima2" value="{{$pkp->departement2->users->email}}">
-                        <input type="text" name="penerima3" id="penerima3" value="{{$pkp->users->email}}">
-                        <input type="text" name="penerima4" id="penerima4" value="{{$pkp->users2->email}}">
-                        @elseif($pkp->userpenerima==NULL)
-                        <input type="text" name="penerima1" id="penerima1" value="{{$pkp->departement->users->email}}">
-                        <input type="text" name="penerima2" id="penerima2" value="{{$pkp->departement2->users->email}}">
-                        <input type="text" name="penerima4" id="penerima4" value="{{$pkp->users2->email}}">
-                        @elseif($pkp->userpenerima2==NULL)
-                        <input type="text" name="penerima1" id="penerima1" value="{{$pkp->departement->users->email}}">
-                        <input type="text" name="penerima2" id="penerima2" value="{{$pkp->departement2->users->email}}">
-                        <input type="text" name="penerima3" id="penerima3" value="{{$pkp->users->email}}">
-                        @endif
-                      @elseif($pkp->tujuankirim2==NULL)
-                        @if($pkp->userpenerima!=NULL)
-                        <input type="text" name="penerima1" id="penerima1" value="{{$pkp->departement->users->email}}">
-                        <input type="text" name="penerima3" id="penerima3" value="{{$pkp->users->email}}">
-                        @else
-                        <input type="text" name="penerima1" id="penerima1" value="{{$pkp->departement->users->email}}">
-                        @endif
-                      @endif
                       <input type="text" value="{{$pkp->author1->email}}" name="author" id="author">
                       <input type="text"  name="perevisi" id="perevisi">
                       <input type="text" value="{{auth()->user()->email}}" name="perevisi" id="user">

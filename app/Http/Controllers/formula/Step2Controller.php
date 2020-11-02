@@ -59,9 +59,10 @@ class Step2Controller extends Controller
             $scalecollect->push([
                 
                 'no' => ++$no,                
-                'id' => $fortail->id,
+                'id' => $fortail->id,      
+                'formula_id' => $fortail->formula_id,
                 'nama_sederhana' => $fortail->nama_sederhana,
-                'alternatif' => $fortail->alternatif,
+                'alternatif1' => $fortail->alternatif1,
                 'alternatif2' => $fortail->alternatif2,
                 'alternatif3' => $fortail->alternatif3,
                 'alternatif4' => $fortail->alternatif4,
@@ -147,7 +148,7 @@ class Step2Controller extends Controller
         if($c>0){
             for($d = 1;$d<=$c;$d++){
                 $ba[$d] =  Bahan::where('id',$request->alternatif[$d])->first();
-                //$pkk = $pkk.' / '.$ba[$d]->kode_komputer;
+                $pkk = $pkk.' / '.$ba[$d]->kode_komputer;
                 // $pin = $pin.' / '.$ba[$d]->id_ingredient;
                 // $pns = $pns.' / '.$ba[$d]->nama_sederhana;
                 // $pko = $pko.' / '.$ba[$d]->kode_oracle;
@@ -167,7 +168,7 @@ class Step2Controller extends Controller
         $fortails->bahan_id = $bp->id;
         $fortails->nama_bahan = $bp->nama_bahan;
         if($c>0){
-            $fortails->alternatif= $ba[1]->nama_sederhana;
+            $fortails->alternatif1= $ba[1]->nama_sederhana;
             $fortails->nama_bahan1= $ba[1]->nama_bahan;
             $fortails->principle1= $ba[1]->principle;
             if($c>1){
@@ -343,6 +344,11 @@ class Step2Controller extends Controller
         }
         
         return redirect()->route('step2',['id_workbook' => $vf, 'id_formula' => $formula->id])->with('status','BahanBaku Berhasil Ditambahkan');
+    }
+
+    public function hapusall($formula){
+        $fortails = Fortail::where('formula_id',$formula)->delete();
+        return redirect::back();
     }
 
     public function destroy($id,$vf){

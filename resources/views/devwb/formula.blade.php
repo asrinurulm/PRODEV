@@ -50,7 +50,10 @@
           </tr>
           <tr>
             <td>Target Konsumen</td><td>&nbsp; : {{ $workbooks->tarkon->tarkon }}</td>
-          </tr>            
+          </tr>   
+          <tr>
+            <td>Launch Deadline</td><td>&nbsp; : {{$workbooks->launch}}{{$workbooks->years}}{{$workbooks->tgl_launch}}</td>
+          </tr>           
         </table>
       </div>
       <div class="col-md-4">
@@ -62,7 +65,10 @@
             <td>Idea</td><td>:</td><td>{{ $workbooks->idea }}</td>
           </tr>
           <tr>
-            <td>Created</td><td>:</td><td>{{ $workbooks->created_date }}</td>
+            <td>PV</td><td>:</td><td>{{ $workbooks->perevisi2->name }}</td>
+          </tr>
+          <tr>
+            <td>Sample Deadline</td><td>:</td><td>{{ $workbooks->jangka }} - {{ $workbooks->waktu }}</td>
           </tr>
         </table>
       </div>
@@ -104,11 +110,12 @@
       <div class="tab-content ">
         {{-- List Formula --}}
         <div class="tab-pane active" id="1">
-          <table class="table"id="Table">
+          <table class="table" id="Table">
             <thead>
               <tr style="font-weight: bold;color:white;background-color: #2a3f54;">     
-                <th class="text-center">#</th>                                    
+                <th class="text-center">#</th>                                  
                 <th class="text-center">Versi</th>
+                <th class="text-center">Category Formula</th>  
                 <th class="text-center">Sample</th>
                 <th class="text-center">Status Sample</th>
                 <th class="text-center">Note RD</th>
@@ -127,13 +134,20 @@
                 <tr>
                 @endif               
                 <td width="2%" class="text-center">
-                  <a href="{{ route('deleteFormula',$formula['id']) }}"><i style="font-size:12px;" class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></a>
-                </td>         
-                <td class="text-center" width="5%">{{ $formula['versi']}}.{{ $formula['turunan']}}</td>
-                <td>
+                  <a href="{{ route('deleteFormula',$formula['id']) }}" onclick="return confirm('Hapus Formula ?')"><i style="font-size:12px;" class="fa fa-trash" data-toggle="tooltip" title="Delete"></i></a>
+                </td>      
+                <td class="text-center" width="5%">{{ $formula['versi']}}.{{ $formula['turunan']}}</td>   
+                <td class="text-center" width="10%  ">
+                  @if($formula['kategori_formula']!='fg')
+                  {{$formula['kategori_formula']}}
+                  @elseif($formula['kategori_formula']=='fg')
+                  Finished Good
+                  @endif
+                </td>
+                <td width="15%">
                   {{$formula['formula']}}
                 </td>
-                <td class="text-center">
+                <td class="text-center" width="10%">
                   @if ($formula['vv'] == 'proses')
                   <span class="label label-warning">Proses</span>                        
                   @endif
@@ -221,12 +235,30 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="col-lg-3 control-label">Kategori</label>
+          <div class="col-lg-8">
+            <div class="row">
+              <div class="col-md-6">
+                <input type="radio" name="kategori" checked oninput="finis_good()" id="id_finis" value="finish good"> Finished Good &nbsp
+                <input type="radio" name="kategori" oninput="wip()" id="id_wip"> WIP
+              </div>
+              <div class="col-md-6" id="ditampilkan">
+                <select name="kategori_formula" id="" disabled class="form-control">
+                  <option disabled selected>--> Select One <--</option>
+                  <option value="granulasi">Granulasi</option>
+                  <option value="premix">Premix</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
           <label class="col-lg-3 control-label">Target Serving</label>
           <div class="col-lg-8">
             <div class="row">
               <div class="col-md-6"><input class="form-control " id="target_serving" name="target_serving" type="number" required/></div>
               <div class="col-md-6">
-                <input type="radio" name="satuan" oninput="satuan_gram()" id="id_gram" value="gram"> Gram
+                <input type="radio" checked name="satuan" oninput="satuan_gram()" id="id_gram" value="Gram"> Gram
                 <input type="radio" name="satuan" oninput="satuan_ml()" id="id_ml" value="Ml"> Ml
               </div>
             </div>
@@ -364,6 +396,38 @@
             "    <input type='number' placeholder='Berat Jenis' disabled name='' id='' class='form-control col-md-12 col-xs-12'>"+
             "  </div>"+
             "</div>"
+    }
+  }
+
+  function finis_good(){
+    var finis_good = document.getElementById('id_finis')
+
+    if(finis_good.checked != true){
+      document.getElementById('ditampilkan').innerHTML = "";
+    }else{
+
+      document.getElementById('ditampilkan').innerHTML =
+        "<select name='' disabled id='' class='form-control'>"+
+        "  <option disabled selected>--> Select One <--</option>"+
+        "  <option value='granulasi'>Granulasi</option>"+
+        "  <option value='premix'>Premix</option>"+
+        "</select>"
+    }
+  }
+
+  function wip(){
+    var wip = document.getElementById('id_wip')
+
+    if(wip.checked != true){
+      document.getElementById('ditampilkan').innerHTML = "";
+    }else{
+
+      document.getElementById('ditampilkan').innerHTML =
+        "<select name='kategori_formula' id='' class='form-control' required>"+
+        "  <option disabled selected>--> Select One <--</option>"+
+        "  <option value='granulasi'>Granulasi</option>"+
+        "  <option value='premix'>Premix</option>"+
+        "</select>"
     }
   }
 </script>

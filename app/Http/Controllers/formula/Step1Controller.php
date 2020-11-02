@@ -34,7 +34,7 @@ class Step1Controller extends Controller
             'subbrands' => $subbrands,
             'idfor' => $idfor,
             'produksis' => $produksis
-            ]);
+        ]);
     }
 
     public function update($formula,$id,Request $request){
@@ -44,6 +44,11 @@ class Step1Controller extends Controller
         $formula->formula = $request->sample;
         $formula->satuan = $request->satuan;
         $formula->berat_jenis = $request->berat_jenis;
+		if($request->kategori_formula!=NULL){
+		$formula->kategori=$request->kategori_formula;
+		}else{
+			$formula->kategori='fg';
+		}
         $formula->save();
         
         return Redirect()->route('step2', [$formula->id,$formula]);

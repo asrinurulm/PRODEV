@@ -30,7 +30,7 @@ class SummaryFormulaController extends Controller
         $idfor = $formula->workbook_id;
         $fortails = Fortail::where('formula_id',$id)->get();
         $ingredient = DB::table('fortails')
-        ->join('tb_ingredients','tb_ingredients.ingredient','=','fortails.nama_sederhana')
+        ->join('tb_nutfact','tb_nutfact.id_ingredient','=','fortails.id_ingredient')
         ->where('fortails.formula_id',$id)
 		->get();
 		$ada = Fortail::where('formula_id',$id)->count();
@@ -55,7 +55,7 @@ class SummaryFormulaController extends Controller
                 'id' => $fortail->id,
                 'kode_komputer' => $fortail->kode_komputer,
                 'nama_sederhana' => $fortail->nama_sederhana,
-                'alternatif' => $fortail->alternatif,
+                'alternatif1' => $fortail->alternatif1,
                 'alternatif2' => $fortail->alternatif2,
                 'alternatif3' => $fortail->alternatif3,
                 'alternatif4' => $fortail->alternatif4,
@@ -143,9 +143,10 @@ class SummaryFormulaController extends Controller
 
         foreach($fortails as $fortail){
 			//Get Needed
-			$ingredients = DB::table('tb_ingredients')->first();
+			$ingredients = DB::table('tb_nutfact')->first();
             $bahan  = Bahan::where('id',$fortail->bahan_id)->first();
 			$curren = Curren::where('id',$bahan->curren_id)->first();
+			$btp = DB::table('tb_btp')->join('bahans','bahans.id','=','tb_btp.id_bahan')->first();
 
             //perhitungan nutfact bayangan
 			//lemak
@@ -243,7 +244,9 @@ class SummaryFormulaController extends Controller
                 'id' => $fortail->id,
                 'kode_komputer' => $bahan->kode_komputer,
                 'nama_sederhana' => $bahan->nama_sederhana,
-                'id_ingeradient' => $bahan->id_ingeradient,
+				'id_ingeradient' => $bahan->id_ingeradient,
+				'btp' =>$btp->btp_carryover,
+				'list' =>$btp->inggredient_list,
 				'hpg' => $hpg,
 				'lemak' => $lemak,
 				'sfa' => $sfa,

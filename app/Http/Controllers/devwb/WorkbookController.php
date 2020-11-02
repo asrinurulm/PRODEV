@@ -146,7 +146,8 @@ class WorkbookController extends Controller
                 'status'  => $formula->status,
                 'status_panel' =>$formula->status_panel,
                 'status_storage' =>$formula->status_storage,
-                'keterangan'    => $formula->keterangan
+                'keterangan'    => $formula->keterangan,
+                'kategori_formula' =>$formula->kategori
             ]);
 
             // VPF
@@ -164,6 +165,7 @@ class WorkbookController extends Controller
                     'vv' => $formula->vv,
                     'finance' => $formula->status_fisibility,
                     'nutfact' => $formula->status_nutfact,
+                    'kategori_formula' =>$formula->kategori,
                     'status'  => $formula->status,
                     'keterangan'    => $formula->keterangan
                 ]);

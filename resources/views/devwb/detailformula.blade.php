@@ -14,6 +14,8 @@
 					<li class="nav-item"><a class="nav-link active" href="#6" data-toggle="tab"><i class="fa fa-folder-open"></i> FORMULATION</a></li>
 					@if($formula->status_fisibility=='selesai')
 					<li class="nav-item"><a class="nav-link" href="#7" data-toggle="tab"><i class="fa fa-cogs"></i> Feasibility</a></li>
+					@else
+					<li class="nav-item" style="background-color:#999999;"><a style="color:black;" disabled ><i class="fa fa-cogs"></i> Feasibility</a></li>
 					@endif
 				</ul><br>
 				<div class="tab-content ">
@@ -26,9 +28,13 @@
 								<li class="nav-item"><a class="nav-link" href="#3" data-toggle="tab"><i class="fa fa-usd"></i> HPP Formula</a></li>
 								@if($formula->status_panel=='sent')
 								<li class="nav-item"><a class="nav-link" href="#4" data-toggle="tab"><i class="fa fa-glass"></i> PANEL</a></li>
+								@else
+								<li class="nav-item" style="background-color:#999999;"><a style="color:black;" class="nav-link"><i class="fa fa-glass"></i> PANEL</a></li>
 								@endif
 								@if($formula->status_storage=='sent')
 								<li class="nav-item"><a class="nav-link" href="#5" data-toggle="tab"><i class="fa fa-flask"></i> Storage</a></li>
+								@else
+								<li class="nav-item" style="background-color:#999999;"><a style="color:black;"><i class="fa fa-flask"></i> Storage</a></li>
 								@endif
 							</ul><br>
 							<!-- Data Formula -->
@@ -39,11 +45,6 @@
 									<div class="panel-default">	
 										<div class="panel-body badan">
 											<label>PT NUTRIFOOD INDONESIA</label>
-											<table ALIGN="right">
-												<tr>
-													<th class="text-right">KODE FORM : F.R.15003</th>
-												</tr>
-											</table>
 											<center> <h2 style="font-size: 22px;font-weight: bold;">FORMULA PRODUK</h2> </center>
 											<center> <h2 style="font-size: 20px;font-weight: bold;">( FOR )</h2> </center>
 											<button type="button" class=" btn-primary btn-lg" ALIGN="center">PRODUKSI DI PLANT  A</button>
@@ -76,7 +77,7 @@
 														<th style="width:20%">Principle</th>
 														<th style="width:10%">PerBatch (gr)</th>
 														<th style="width:10%">PerServing (gr)</th>
-														<th style="width:5%">Persen</th>
+														<th style="width:8%">Persen</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -88,7 +89,7 @@
 															<table class="table-bordered table">
 																<tbody>
 																	<tr><td><b>{{ $fortail['nama_sederhana'] }}</td></tr>
-																	@if($fortail['alternatif'] != Null)<tr><td>{{ $fortail['alternatif'] }}</td></tr>@endif
+																	@if($fortail['alternatif1'] != Null)<tr><td>{{ $fortail['alternatif1'] }}</td></tr>@endif
 																	@if($fortail['alternatif2'] != Null)<tr><td>{{ $fortail['alternatif2'] }}</td></tr>@endif
 																	@if($fortail['alternatif3'] != Null)<tr><td>{{ $fortail['alternatif3'] }}</td></tr>@endif
 																	@if($fortail['alternatif4'] != Null)<tr><td>{{ $fortail['alternatif4'] }}</td></tr>@endif
@@ -146,7 +147,7 @@
 															<table class="table-bordered table">
 																<tbody>
 																	<tr><td><b>{{ $fortail['nama_sederhana'] }}</td></tr>
-																	@if($fortail['alternatif'] != Null)<tr><td>{{ $fortail['alternatif'] }}</td></tr>@endif
+																	@if($fortail['alternatif1'] != Null)<tr><td>{{ $fortail['alternatif1'] }}</td></tr>@endif
 																	@if($fortail['alternatif2'] != Null)<tr><td>{{ $fortail['alternatif2'] }}</td></tr>@endif
 																	@if($fortail['alternatif3'] != Null)<tr><td>{{ $fortail['alternatif3'] }}</td></tr>@endif
 																	@if($fortail['alternatif4'] != Null)<tr><td>{{ $fortail['alternatif4'] }}</td></tr>@endif
@@ -199,31 +200,6 @@
 													</tr>
 												</tbody>
 											</table>
-						
-											<table ALIGN="right" class="table-bordered">
-												<thead>
-													<tr>
-														<th class="text-center" colspan="2">Dibuat Oleh :</th>
-														<th class="text-center">Mengetahui  *): </th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr class="text-center">
-														<td class="text-center"><br><br><br><br><br></td>
-														<td class="text-center"><br><br><br><br><br></td>
-													</tr>
-													<tr>
-														<td class="text-center" width="35%">RD Sourcing</td>
-														<td class="text-center" width="45%">RD Sourcing Asso Mgr</td>
-														<td class="text-center">RPE Manager</td>
-													</tr>
-												</tbody>
-											</table><br><br><br><br><br><br><br><br>
-											<table ALIGN="right">
-												<tr><td>Revisi/Berlaku : {{ $formula->created_at }} </td></tr>
-												<tr><td>Masa Berlaku : Selamanya</td></tr>
-											</table>
-											<table><tr>*) Ditandatangani jika perubahan formula berasal/ diajukan oleh RD sourcing</tr></table>
 										</div>
 									</div>
 									@endif

@@ -36,6 +36,11 @@ class FormulaController extends Controller
 		$formulas->serving_size = $request->target_serving;
 		$formulas->satuan=$request->satuan;
 		$formulas->berat_jenis=$request->berat_jenis;
+		if($request->kategori_formula!=NULL){
+		$formulas->kategori=$request->kategori_formula;
+		}else{
+			$formulas->kategori='fg';
+		}
         $formulas->revisi = '0';
         $formulas->versi = 1;   
         $formulas->save();
@@ -87,7 +92,7 @@ class FormulaController extends Controller
 		//dd($formula->id);
 		$fortails = Fortail::where('formula_id',$formula->id)->get();
         $ingredient = DB::table('fortails')
-        ->join('tb_ingredients','tb_ingredients.id_ingredient','=','fortails.id_ingredient')
+        ->join('tb_nutfact','tb_nutfact.id_ingredient','=','fortails.id_ingredient')
         ->where('fortails.formula_id',$id)
 		->get();
 	//dd($ingredient);
@@ -112,7 +117,7 @@ class FormulaController extends Controller
                 'id' => $fortail->id,
                 'kode_komputer' => $fortail->kode_komputer,
                 'nama_sederhana' => $fortail->nama_sederhana,
-                'alternatif' => $fortail->alternatif,
+                'alternatif1' => $fortail->alternatif1,
                 'alternatif2' => $fortail->alternatif2,
                 'alternatif3' => $fortail->alternatif3,
                 'alternatif4' => $fortail->alternatif4,
@@ -200,9 +205,10 @@ class FormulaController extends Controller
 
         foreach($fortails as $fortail){
 			//Get Needed
-			$ingredients = DB::table('tb_ingredients')->first();
+			$ingredients = DB::table('tb_nutfact')->first();
             $bahan  = Bahan::where('id',$fortail->bahan_id)->first();
 			$curren = Curren::where('id',$bahan->curren_id)->first();
+			$btp = DB::table('tb_btp')->join('bahans','bahans.id','=','tb_btp.id_bahan')->first();
 
             //perhitungan nutfact bayangan
 			//lemak

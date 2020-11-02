@@ -709,6 +709,7 @@ class pkpController extends Controller
         try{
             Mail::send('pv.aktifitasinfoemail', [
                 'app'=>$isipkp,
+                'info' => 'Saat ini terdapat perubahan data PKP',
             ],function($message)use($request)
             {
                 $tujuan = array(); 
@@ -718,7 +719,7 @@ class pkpController extends Controller
                 $data = explode(',', $email);
                 for ($i = 0; $i < count($data); $i++)
                 {
-                    $message->subject('Update Data PKP');
+                    $message->subject('PRODEV | PKP');
                     $message->from('app.prodev@nutrifood.co.id', 'Admin PRODEV');
                     $message->to($request->pengirim1);
                     $message->cc($data[$i]);
@@ -890,7 +891,8 @@ class pkpController extends Controller
         $isipkp = tipp::where('id_pkp',$id_pkp)->where('status_data','=','active')->get();
         try{
             Mail::send('pv.aktifitasinfoemail', [
-                'app'=>$isipkp,],function($message)use($request)
+                'app'=>$isipkp,
+                'info' => 'Saat ini terdapat perubahan data PKP',],function($message)use($request)
             {
                 $tujuan = array(); 
                 $validator = Validator::make($request->all(), $tujuan);  
@@ -899,7 +901,7 @@ class pkpController extends Controller
                     $data = explode(',', $email);
                     for ($i = 0; $i < count($data); $i++)
                     {
-                        $message->subject('Update Data PKP');
+                        $message->subject('PRODEV | PKP');
                         $message->from('app.prodev@nutrifood.co.id', 'Admin PRODEV');
                         $message->to($request->pengirim1);
                         $message->cc($data[$i]);
@@ -1163,6 +1165,33 @@ class pkpController extends Controller
                     }
                 }
             }
+
+            $isipkp = tipp::where('id_pkp',$request->id)->where('status_data','=','active')->get();
+            try{
+                Mail::send('pv.aktifitasinfoemail', [
+                    'app'=>$isipkp,
+                    'info' => 'Terdapat Data PKP Baru',
+                ],function($message)use($request)
+                {
+                    $tujuan = array(); 
+                    $validator = Validator::make($request->all(), $tujuan);  
+                    if ($validator->passes()) {
+                    $email = implode(',', $request->input('emailtujuan'));
+                    $data = explode(',', $email);
+                    for ($i = 0; $i < count($data); $i++)
+                    {
+                        $message->subject('PRODEV | PKP');
+                        $message->from('app.prodev@nutrifood.co.id', 'Admin PRODEV');
+                        $message->to($request->pengirim1);
+                        $message->cc($data[$i]);
+                    }
+                }
+                });
+            }
+            catch (Exception $e){
+            return response (['status' => false,'errors' => $e->getMessage()]);
+            }
+
             return redirect()->Route('datatambahanpkp',['id_pkp' => $tip->id_pkp,'revisi' => $tip->revisi, 'turunan' => $tip->turunan])->with('status', 'Data has been added up ');
         }
         
@@ -1272,8 +1301,8 @@ class pkpController extends Controller
                         $user = DB::table('users')->where('id',$dept->manager_id)->get();
                         foreach($user as $user){
                             $data = $user->email;
-                            $cc = Auth::user()->email;
-                            //  dd($cc);
+                            $cc = [Auth::user()->email,'asrinurul4238@gmail.com'];
+                            //dd($cc);
                             $message->to($data);
                             $message->cc($cc);
                         }
@@ -1286,7 +1315,7 @@ class pkpController extends Controller
                             $user2 = DB::table('users')->where('id',$dept2->manager_id)->get();
                             foreach($user2 as $user2){
                                 $data2 = [$user2->email,Auth::user()->email];
-                                // dd($data);
+                                //dd($data);
                                 $message->cc($data2);
                             }
                         }
@@ -1353,8 +1382,10 @@ class pkpController extends Controller
                         $user = DB::table('users')->where('id',$dept->manager_id)->get();
                         foreach($user as $user){
                             $data = $user->email;
-                            //dd($data);
+                            $cc = [Auth::user()->email,'asrinurul4238@gmail.com'];
+                            //dd($cc);
                             $message->to($data);
+                            $message->cc($cc);
                         }
                     }
 
@@ -1364,7 +1395,7 @@ class pkpController extends Controller
                         foreach($dept2 as $dept2){
                             $user2 = DB::table('users')->where('id',$dept2->manager_id)->get();
                             foreach($user2 as $user2){
-                                $data2 = $user2->email;
+                                $data2 = [$user2->email,Auth::user()->email];
                                 //dd($data);
                                 $message->cc($data2);
                             }
@@ -1468,31 +1499,26 @@ class pkpController extends Controller
         $user = user::where('status','=','active')->get();
         $max2 = tipp::where('id_pkp',$id_project)->max('revisi');
         $datapkp = tipp::where('id_pkp',$id_project)->where('turunan',$max)->where('revisi',$max2)->get();
-        $datawb = tipp::where('id_pkp',$id_project)->where('status_data','=','active')->get();
-        $status_sample = formula::where('workbook_id',$id_project)->where('vv','=','final')->count();
+        $pkp1 = pkp_project::where('id_project',$id_project)->get();
         $hformula = formula::where('workbook_id',$id_project)->count();
         $formula = formula::where('workbook_id',$id_project)->where('vv','!=','null')->orderBy('versi','asc')->get();
-        $pkp1 = pkp_project::where('id_project',$id_project)->get();
         $data = pkp_project::where('id_project',$id_project)->get();
+        $data1 = tipp::where('id_project',$id_project)
+        ->join('pkp_project','tippu.id_pkp','pkp_project.id_project')->where('status_data','=','active')->get();
         $hasilpanel = hasilpanel::where('id_wb',$id_project)->count();
-        $data1 = pkp_project::where('id_project',$id_project)
-        ->join('tippu','tippu.id_pkp','pkp_project.id_project')->where('status_data','=','active')
-        ->get();
         return view('pkp.daftarpkp')->with([
             'pkp' => $pkp,
             'pkp1' => $pkp1,
             'pesan' => $pesan,
-            'hasilpanel' => $hasilpanel,
             'sample' => $sample_project,
             'status_sample' => $status_sample_project,
             'notif' =>$notif,
-            'hformula' => $hformula,
-            'datawb' => $datawb,
+            'hasilpanel' => $hasilpanel,
             'pengajuan' => $pengajuan,
-            'status' => $status_sample,
-            'formula' => $formula,
             'user' => $user,
             'data1' => $data1,
+            'formula' => $formula,
+            'hformula' => $hformula,
             'hitungnotif' => $hitungnotif,
             'datapkp' => $datapkp,
             'pengajuanpkp' => $pengajuanpkp,
